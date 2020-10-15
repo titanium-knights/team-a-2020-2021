@@ -198,7 +198,7 @@ public class MecanumDrive {
      * @param turn the direction at which to turn
      */
     public void move(double power, double x, double y, double turn) {
-        move(power, Motor.Vector2D(x, y), turn, TurnBehavior.ADDSUBTRACT);
+        move(power, new Motor.Vector2D(x, y), turn, TurnBehavior.ADDSUBTRACT);
     }
 
     public void forwardWithPower(double power) {
