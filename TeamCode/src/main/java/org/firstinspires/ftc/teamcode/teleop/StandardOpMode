@@ -1,0 +1,39 @@
+package org.firstinspires.ftc.teamcode.teleop;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+import org.firstinspires.ftc.teamcode.util.MecanumDrive;
+
+@TeleOp(name = "Tele Op Test", group = "Tests B Experiments")
+public class StandardOpMode extends LinearOpMode {
+
+    private final double JOYSTICK_SENSITIVITY = 0.2f;
+
+    private MecanumDrive drive;
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        drive = MecanumDrive.standard(hardwareMap);
+
+        waitForStart();
+
+        while (opModeIsActive()) {
+
+            // Gets the speed, strafe, and turn of the robot and accounts for stick drifting
+            double speed = gamepad1.left_stick_y;
+            double strafe = -gamepad1.left_stick_x;
+            double turn = gamepad1.right_stick_x;
+            if (Math.abs(turn) < JOYSTICK_SENSITIVITY) turn = 0;
+            if (Math.abs(strafe) < JOYSTICK_SENSITIVITY) strafe = 0;
+            if (Math.abs(speed) < JOYSTICK_SENSITIVITY) speed = 0;
+
+            // Drives in the inputted direction.
+            MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, speed);
+            drive.move(1, vector, turn);
+
+        }
+    }
+}
