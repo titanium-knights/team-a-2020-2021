@@ -33,12 +33,13 @@ public class Intake {
      * Sets the pivot flywheels' speeds to their saved power.
      */
     public void togglePower () {
+        on = !on;
         this.top.motor.setPower(on ? power : 0);
         this.bottom.motor.setPower(on ? power : 0);
     }
 
     /**
-     * Sets the pivot flywheels' speeds to the negative of their saved power.
+     * Sets the direction of the flywheels.
      */
     public void toggleDirection () {
         power = -power;
@@ -56,7 +57,7 @@ public class Intake {
 
     public static Intake standard(HardwareMap hardwareMap) {
         Motor top = new Motor(hardwareMap.get(DcMotor.class, "intake_top"), "intake_top");
-        Motor bottom  = new Motor(hardwareMap.get(DcMotor.class, "intake_bottom"), "intake_bottom";
+        Motor bottom  = new Motor(hardwareMap.get(DcMotor.class, "intake_bottom"), "intake_bottom");
         return new Intake(top, bottom);
     }
 
