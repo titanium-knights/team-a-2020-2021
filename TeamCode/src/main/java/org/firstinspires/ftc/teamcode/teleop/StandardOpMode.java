@@ -15,6 +15,7 @@ public class StandardOpMode extends LinearOpMode {
 
     private MecanumDrive drive;
     private Intake intake;
+    private Shooter shooter;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -23,9 +24,10 @@ public class StandardOpMode extends LinearOpMode {
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
         intake = Intake.standard(hardwareMap);
+        shooter = Shooter.standard(hardwareMap);
 
         // TODO: Make utility class - shooter.shoot() or something?
-        DcMotor shooter = hardwareMap.dcMotor.get("shooter");
+        DcMotor shooterMotor = hardwareMap.dcMotor.get("shooter");
         CRServo shooterServo = hardwareMap.crservo.get("pinball");
         boolean shooterIsShooting = false;
 
@@ -68,7 +70,14 @@ public class StandardOpMode extends LinearOpMode {
                 wobbleGoal.setPosition(0);
             }
 
-            if (shooterIsShooting) shooter.setPower(-1); else shooter.setPower(0);
+            if (shooterIsShooting) shooterMotor.setPower(-1); else shooterMotor.setPower(0);
+
+            /*
+            // Todo: Uncomment this and remove the old code when you want to test the Shooter class
+            // Toggle shooter power and controls the pinball as necessary.
+            if (gm1.x.pressed()) shooter.toggleShooterPower();
+            shooter.nudgeRings(gamepad1.y, gamepad1.a);
+             */
 
             // Update the GamepadManagers (should happen at the end or beginning of the loop)
             gm1.updateAll();
