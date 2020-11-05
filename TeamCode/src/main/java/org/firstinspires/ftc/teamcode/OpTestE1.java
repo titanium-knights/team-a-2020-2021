@@ -16,7 +16,7 @@ public class OpTestE1 extends LinearOpMode {
 	private static final byte MIRROR = 1;
 
 	public static String[] standardMotorNames = {"mecanum_fl", "mecanum_fr", "mecanum_bl", "mecanum_br"};
-	public static Vector2D[] standardMotorVectors = {Vector2D.cartesian(1, 1), Vector2D.cartesian(-1, 1), Vector2D.cartesian(-1, 1), Vector2D.cartesian(1, 1)};
+	public static Vector2D[] standardMotorVectors = {Vector2D.cartesian(-1, 1), Vector2D.cartesian(-1, -1), Vector2D.cartesian(1, 1), Vector2D.cartesian(1, -1)};
 	static DcMotor.Direction[] standardMotorDirections = {DcMotor.Direction.FORWARD, DcMotor.Direction.REVERSE, DcMotor.Direction.FORWARD, DcMotor.Direction.REVERSE};
 
 	private DcMotor[] motors = new DcMotor[4];
