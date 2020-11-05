@@ -18,6 +18,7 @@ public class OpTestE1 extends LinearOpMode {
 	public static String[] standardMotorNames = {"mecanum_fl", "mecanum_fr", "mecanum_bl", "mecanum_br"};
 	public static Vector2D[] standardMotorVectors = {Vector2D.cartesian(-1, 1), Vector2D.cartesian(-1, -1), Vector2D.cartesian(1, 1), Vector2D.cartesian(1, -1)};
 	static DcMotor.Direction[] standardMotorDirections = {DcMotor.Direction.FORWARD, DcMotor.Direction.REVERSE, DcMotor.Direction.FORWARD, DcMotor.Direction.REVERSE};
+	// Note that both the above vectors and the above directions are wrong, but the mistakes *should* cancel out
 
 	private DcMotor[] motors = new DcMotor[4];
 
