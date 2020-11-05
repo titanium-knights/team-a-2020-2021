@@ -32,7 +32,13 @@ public class ForwardTestOpMode extends OpMode {
     @Override
     public void loop() {
         for (DcMotor motor: motors) {
-            motor.setPower(gamepad1.dpad_up ? 0.5 : 0.0);
+            if (gamepad1.dpad_left) {
+                motor.setPower(0.5);
+            } else if (gamepad1.dpad_right) {
+                motor.setPower(1);
+            } else {
+                motor.setPower(0);
+            }
         }
     }
 }
