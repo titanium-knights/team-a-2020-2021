@@ -13,11 +13,11 @@ public class WobbleGoal {
     }
 
     public void release() {
-        this.grabber.setPower(-0.5);
+        this.grabber.setPower(0.5);
     }
 
     public void grab() {
-        this.grabber.setPower(0.5);
+        this.grabber.setPower(-0.5);
     }
 
     public void stopGrabber() {

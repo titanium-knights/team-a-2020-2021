@@ -31,7 +31,7 @@ public class StandardOpMode extends LinearOpMode {
         CRServo shooterServo = hardwareMap.crservo.get("pinball");
         boolean shooterIsShooting = false;
 
-        Servo wobbleGoal = hardwareMap.servo.get("wobble");
+        WobbleGoal wobble = WobbleGoal.standard(hardwareMap);
 
         GamepadManager gm1 = new GamepadManager(gamepad1);
         GamepadManager gm2 = new GamepadManager(gamepad2);
@@ -63,11 +63,19 @@ public class StandardOpMode extends LinearOpMode {
             } else {
                 shooterServo.setPower(0);
             }
-            if (gm1.dpad_up.pressed()) {
-                wobbleGoal.setPosition(1);
+            if (gamepad1.dpad_up) {
+                wobble.liftArm();
+            } else if (gamepad1.dpad_down) {
+                wobble.lowerArm();
+            } else {
+                wobble.stopArm();
             }
-            if (gm1.dpad_down.pressed()) {
-                wobbleGoal.setPosition(0);
+            if (gamepad1.dpad_left) {
+                wobble.release();
+            } else if (gamepad1.dpad_right) {
+                wobble.grab();
+            } else {
+                wobble.stopGrabber();
             }
 
             if (shooterIsShooting) shooterMotor.setPower(-1); else shooterMotor.setPower(0);
