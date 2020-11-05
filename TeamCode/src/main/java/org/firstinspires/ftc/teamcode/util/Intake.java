@@ -56,7 +56,7 @@ public class Intake {
 
     public static Intake standard(HardwareMap hardwareMap) {
         Motor top = new Motor(hardwareMap.get(DcMotor.class, "intake_top"), "intake_top");
-        Motor bottom  = new Motor(hardwareMap.get(DcMotor.class, "intake_bottom"), "intake_bottom";
+        Motor bottom  = new Motor(hardwareMap.get(DcMotor.class, "intake_bottom"), "intake_bottom");
         return new Intake(top, bottom);
     }
 
