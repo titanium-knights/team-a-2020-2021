@@ -14,8 +14,8 @@ public class AutoOpMode extends LinearOpMode {
         // make sure to angle robot left - curve will be fixed at a later date
         // TODO for hardware team
 
-        double MS_PER_INCHES = 1000/54.0;
-        double POWER = 0.7;
+        double MS_PER_INCHES = 1000/77.0;
+        double POWER = 1;
 
         MecanumDrive drive = MecanumDrive.standard(hardwareMap);
         for (DcMotor motor: drive.getMotors()) {
@@ -30,26 +30,26 @@ public class AutoOpMode extends LinearOpMode {
         // Movey move
         shooter.setPower(-1);
         drive.forwardWithPower(POWER);
-        sleep((long)(12 * MS_PER_INCHES));
+        sleep((long)(78 * MS_PER_INCHES));
         drive.stop();
 
         // Shooty shoot
         for (int i = 0; i < 3; ++i) {
             // Thwack thwack thwack
-            sleep(1000);
-            shooterServo.setPower(0.5);
-            sleep(1000);
-            shooterServo.setPower(-0.5);
-            sleep(500);
+            sleep(300);
+            shooterServo.setPower(1);
+            sleep(300);
+            shooterServo.setPower(-1);
+            sleep(300);
             shooterServo.setPower(0);
-            sleep(1000);
+            sleep(300);
         }
 
         shooter.setPower(0);
 
         // Parky park
         drive.forwardWithPower(POWER);
-        sleep(350);
+        sleep((long)(20 * MS_PER_INCHES));
         drive.stop();
     }
 }
