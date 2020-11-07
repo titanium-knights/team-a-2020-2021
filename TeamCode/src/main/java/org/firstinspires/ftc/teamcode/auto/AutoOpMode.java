@@ -63,7 +63,7 @@ public class AutoOpMode extends LinearOpMode {
         // Shooty shoot
         for (int i = 0; i < 3; ++i) {
             // Thwack thwack thwack
-            sleep(300);
+            sleep(400);
             shooterServo.setPower(1);
             sleep(200);
             shooterServo.setPower(-1);
