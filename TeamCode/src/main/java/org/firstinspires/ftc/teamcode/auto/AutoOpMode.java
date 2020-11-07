@@ -47,10 +47,17 @@ public class AutoOpMode extends LinearOpMode {
         sleep((long)(37 * MS_PER_INCHES));
         drive.stop();
 
-        if (bottomSensor.getDistance(DistanceUnit.INCH) < 12) {
+        double bottom = bottomSensor.getDistance(DistanceUnit.INCH);
+        double top = topSensor.getDistance(DistanceUnit.INCH);
+
+                telemetry.addData("b", bottom);
+                telemetry.addData("t", top);
+                telemetry.update();
+
+        if (bottom < 11.3) {
             wobbleGoalTarget = 1;
         }
-        if (topSensor.getDistance(DistanceUnit.INCH) < 12) {
+        if (top < 14) {
             wobbleGoalTarget = 2;
         }
 
@@ -81,12 +88,12 @@ public class AutoOpMode extends LinearOpMode {
         } else if (wobbleGoalTarget == 1) {
             sleep((long)(57 * MS_PER_INCHES));
         } else if (wobbleGoalTarget == 2) {
-            sleep((long)(82 * MS_PER_INCHES));
+            sleep((long)(90 * MS_PER_INCHES));
         }
         drive.stop();
         if (wobbleGoalTarget == 1) {
             drive.strafeLeftWithPower(POWER);
-            sleep((long)(38 * MS_PER_INCHES));
+            sleep((long)(30 * MS_PER_INCHES));
             drive.stop();
         } else {
             drive.strafeRightWithPower(POWER);
@@ -118,7 +125,7 @@ public class AutoOpMode extends LinearOpMode {
             drive.stop();
         } else if (wobbleGoalTarget == 2) {
             drive.forwardWithPower(-POWER);
-            sleep((long)(47 * MS_PER_INCHES));
+            sleep((long)(40 * MS_PER_INCHES));
             drive.strafeRightWithPower(-POWER);
             sleep((long)(40 * MS_PER_INCHES));
             drive.stop();
