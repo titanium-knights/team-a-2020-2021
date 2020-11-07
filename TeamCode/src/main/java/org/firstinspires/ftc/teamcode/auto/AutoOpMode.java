@@ -54,7 +54,7 @@ public class AutoOpMode extends LinearOpMode {
                 telemetry.addData("t", top);
                 telemetry.update();
 
-        if (bottom < 11.3) {
+        if (bottom < 12) {
             wobbleGoalTarget = 1;
         }
         if (top < 14) {
