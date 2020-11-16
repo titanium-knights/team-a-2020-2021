@@ -4,23 +4,26 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 public abstract class OdometryOpMode extends LinearOpMode {
 
+	public Vector2D position;
+	public Vector2D angle;
+
 	@Override
 	public void runOpMode() throws InterruptedException {
 
-		open();
+		odometryStart();
 		waitForStart();
 
 		while (opModeIsActive()) {
-			loop();
+			odometryLoop();
 		}
 
-		close();
+		odometryClose();
 	}
 
-	public abstract void open();
+	public abstract void odometryStart();
 
-	public abstract void loop(Vector2D position, Vector2D angle);
+	public abstract void odometryLoop();
 
-	public abstract void close();
+	public abstract void odometryClose();
 
 }
