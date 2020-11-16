@@ -187,7 +187,18 @@ public class MecanumDrive {
      * @param turn the direction at which to turn
      */
     public void move(double power, Motor.Vector2D vector, double turn) {
-        move(power, vector, turn, TurnBehavior.MULTIPLY);
+        move(power, vector, turn, TurnBehavior.ADDSUBTRACT);
+    }
+
+    /**
+     * Moves in a given direction at a given power while turning towards a given direction. Uses MULTIPLY for the turn behavior.
+     * @param power the power to move in
+     * @param x horizontal speed
+     * @param y vertical speed
+     * @param turn the direction at which to turn
+     */
+    public void move(double power, double x, double y, double turn) {
+        move(power, new Motor.Vector2D(x, y), turn, TurnBehavior.ADDSUBTRACT);
     }
 
     public void forwardWithPower(double power) {
