@@ -129,6 +129,7 @@ public class AutoOpMode extends LinearOpMode {
             drive.strafeRightWithPower(-POWER);
             sleep((long)(40 * MS_PER_INCHES));
             drive.stop();
+            
         }
     }
 }
