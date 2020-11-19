@@ -8,7 +8,7 @@ public abstract class OdometryOpMode extends LinearOpMode {
     public final double distanceStrafeEncoder = 1;
 
 	public Vector2D position;
-	public Vector2D angle;
+	public double angle;
 
 	@Override
 	public void runOpMode() throws InterruptedException {
