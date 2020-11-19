@@ -14,6 +14,10 @@ public abstract class OdometryOpMode extends LinearOpMode {
 	@Override
 	public void runOpMode() throws InterruptedException {
 
+		// Starting position; change later
+		position = Vector2D.cartesian(0, 0);
+		angle = Math.PI / 2;
+
 		odometryStart();
 		waitForStart();
 
