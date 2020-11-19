@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.teamcode.util.*;
 
 @TeleOp(name = "Standard Tele Op", group = "Tests B Experiments")
@@ -16,6 +18,7 @@ public class StandardOpMode extends LinearOpMode {
     private MecanumDrive drive;
     private Intake intake;
     private Shooter shooter;
+    private ElapseTime timer = new ElapseTime();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -58,11 +61,16 @@ public class StandardOpMode extends LinearOpMode {
             if (gm1.x.pressed()) shooterIsShooting = !shooterIsShooting;
             if (gamepad1.y) {
                 shooterServo.setPower(0.5);
+//                ElapsedTime.MILLIS_IN_NANO(5000);
+//                shooterServo.setPower(-0.5);
             } else if (gamepad1.a) {
                 shooterServo.setPower(-0.5);
+//                ElapsedTime.MILLIS_IN_NANO(5000);
+//                shooterServo.setPower(0.5);
             } else {
                 shooterServo.setPower(0);
             }
+
             if (gamepad1.dpad_up) {
                 wobble.liftArm();
             } else if (gamepad1.dpad_down) {
@@ -80,6 +88,14 @@ public class StandardOpMode extends LinearOpMode {
 
             if (shooterIsShooting) shooterMotor.setPower(-1); else shooterMotor.setPower(0);
 
+            if (gamepad2.dpad_up) {
+                // move forward with power;
+            } else if (gamepad2.dpad_down) {
+                // move back with power;
+            } else if (gamepad2.dpad_left){
+                // move left with power;
+            }
+                wobble.stopArm();
             /*
             // Todo: Uncomment this and remove the old code when you want to test the Shooter class
             // Toggle shooter power and controls the pinball as necessary.
