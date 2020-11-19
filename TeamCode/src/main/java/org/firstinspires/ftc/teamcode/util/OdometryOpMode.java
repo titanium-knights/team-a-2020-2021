@@ -34,12 +34,25 @@ public abstract class OdometryOpMode extends LinearOpMode {
 		odometryClose();
 	}
 
+	/**
+	 * Initialization of variables before odometry initialization; must set initial {@code position} and {@code angle}
+	 */
 	public abstract void odometryPreInit();
 
+	/**
+	 * Initialization of variables after odometry initialization
+	 */
 	public abstract void odometryPostInit();
 
+	/**
+	 * Actual opmode process which is run once every tick loop; odometry gets updated before this is called
+	 * @throws InterruptedException
+	 */
 	public abstract void odometryLoop() throws InterruptedException;
 
+	/**
+	 * Ending process after close of tick loop
+	 */
 	public abstract void odometryClose();
 
 }
