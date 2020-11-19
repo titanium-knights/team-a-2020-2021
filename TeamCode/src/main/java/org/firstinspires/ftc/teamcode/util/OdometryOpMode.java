@@ -3,7 +3,8 @@ package org.firstinspires.ftc.teamcode.util;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 public abstract class OdometryOpMode extends LinearOpMode {
-    public final double deadWheelDiameter = 1*2*Math.PI;
+
+    public final double deadWheelCircumference = 1*2*Math.PI;
     public final double distanceVerticalEncoder = 1;
     public final double distanceStrafeEncoder = 1;
 
