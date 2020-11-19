@@ -10,6 +10,10 @@ public abstract class OdometryOpMode extends LinearOpMode {
     public final double distanceVerticalEncoder = 1;
     public final double distanceStrafeEncoder = 1;
 
+    public tempEncoder left;
+    public tempEncoder right;
+    public tempEncoder bottom;
+
 	public Vector2D position = null;
 	public double angle = Double.NaN;
 
@@ -21,7 +25,9 @@ public abstract class OdometryOpMode extends LinearOpMode {
 		if (angle == Double.NaN || position == null)
 			throw new IllegalStateException("Initial position and angle should be set by odometryPreInit.");
 
-
+		left = new tempEncoder(.0001);
+		right = new tempEncoder(.00015);
+		bottom = new tempEncoder(0);
 
 		odometryPostInit();
 
@@ -54,5 +60,17 @@ public abstract class OdometryOpMode extends LinearOpMode {
 	 * Ending process after close of tick loop
 	 */
 	public abstract void odometryClose();
+
+
+	private class tempEncoder {
+		int i = 0;
+		final double m;
+		public tempEncoder(double multiplier) {
+			m = multiplier;
+		}
+		public double getDistance() {
+			return m * i++;
+		}
+	}
 
 }
