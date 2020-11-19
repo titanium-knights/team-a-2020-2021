@@ -15,6 +15,7 @@ public class StandardOpMode extends LinearOpMode {
 
     private MecanumDrive drive;
     private Intake intake;
+    private Shooter shooter;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -23,13 +24,14 @@ public class StandardOpMode extends LinearOpMode {
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
         intake = Intake.standard(hardwareMap);
+        shooter = Shooter.standard(hardwareMap);
 
         // TODO: Make utility class - shooter.shoot() or something?
-        DcMotor shooter = hardwareMap.dcMotor.get("shooter");
+        DcMotor shooterMotor = hardwareMap.dcMotor.get("shooter");
         CRServo shooterServo = hardwareMap.crservo.get("pinball");
         boolean shooterIsShooting = false;
 
-        Servo wobbleGoal = hardwareMap.servo.get("wobble");
+        WobbleGoal wobble = WobbleGoal.standard(hardwareMap);
 
         GamepadManager gm1 = new GamepadManager(gamepad1);
         GamepadManager gm2 = new GamepadManager(gamepad2);
@@ -61,14 +63,29 @@ public class StandardOpMode extends LinearOpMode {
             } else {
                 shooterServo.setPower(0);
             }
-            if (gm1.dpad_up.pressed()) {
-                wobbleGoal.setPosition(1);
+            if (gamepad1.dpad_up) {
+                wobble.liftArm();
+            } else if (gamepad1.dpad_down) {
+                wobble.lowerArm();
+            } else {
+                wobble.stopArm();
             }
-            if (gm1.dpad_down.pressed()) {
-                wobbleGoal.setPosition(0);
+            if (gamepad1.dpad_left) {
+                wobble.release();
+            } else if (gamepad1.dpad_right) {
+                wobble.grab();
+            } else {
+                wobble.stopGrabber();
             }
 
-            if (shooterIsShooting) shooter.setPower(-1); else shooter.setPower(0);
+            if (shooterIsShooting) shooterMotor.setPower(-1); else shooterMotor.setPower(0);
+
+            /*
+            // Todo: Uncomment this and remove the old code when you want to test the Shooter class
+            // Toggle shooter power and controls the pinball as necessary.
+            if (gm1.x.pressed()) shooter.toggleShooterPower();
+            shooter.nudgeRings(gamepad1.y, gamepad1.a);
+             */
 
             // Update the GamepadManagers (should happen at the end or beginning of the loop)
             gm1.updateAll();
