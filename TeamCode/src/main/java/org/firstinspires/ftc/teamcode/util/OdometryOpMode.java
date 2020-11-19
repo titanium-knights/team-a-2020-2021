@@ -26,7 +26,7 @@ public abstract class OdometryOpMode extends LinearOpMode {
 
 	public abstract void odometryStart();
 
-	public abstract void odometryLoop();
+	public abstract void odometryLoop() throws InterruptedException;
 
 	public abstract void odometryClose();
 
