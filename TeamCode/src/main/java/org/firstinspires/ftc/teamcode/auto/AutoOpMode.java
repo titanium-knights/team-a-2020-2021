@@ -45,25 +45,28 @@ public class AutoOpMode extends LinearOpMode {
         sleep((long)(32 * MS_PER_INCHES));
         drive.stop();
 
-        double bottom = bottomSensor.getDistance(DistanceUnit.INCH);
-        double top = topSensor.getDistance(DistanceUnit.INCH);
 
-                telemetry.addData("b", bottom);
-                telemetry.addData("t", top);
-                telemetry.update();
-
-        if (bottom < 12) {
-            wobbleGoalTarget = 1;
-        }
-        if (top < 14) {
-            wobbleGoalTarget = 2;
-        }
 
         // Movey move
         // shooter.setPower(-1);
         drive.strafeLeftWithPower(POWER);
-        sleep((long)(49 * MS_PER_INCHES));
+        sleep((long)(45 * MS_PER_INCHES));
         drive.stop();
+
+            double bottom = bottomSensor.getDistance(DistanceUnit.INCH);
+            double top = topSensor.getDistance(DistanceUnit.INCH);
+
+            telemetry.addData("b", bottom);
+            telemetry.addData("t", top);
+            telemetry.update();
+
+            if (bottom < 12) {
+                wobbleGoalTarget = 1;
+            }
+            if (top < 14) {
+                wobbleGoalTarget = 2;
+            }
+
         drive.forwardWithPower(POWER);
         sleep((long)(29 * MS_PER_INCHES));
         drive.stop();
@@ -86,16 +89,16 @@ public class AutoOpMode extends LinearOpMode {
         // Parky park
         drive.forwardWithPower(POWER);
         if (wobbleGoalTarget == 0) {
-            sleep((long)(26 * MS_PER_INCHES));
+            sleep((long)(30 * MS_PER_INCHES));
         } else if (wobbleGoalTarget == 1) {
-            sleep((long)(57 * MS_PER_INCHES));
+            sleep((long)(45 * MS_PER_INCHES));
         } else if (wobbleGoalTarget == 2) {
-            sleep((long)(90 * MS_PER_INCHES));
+            sleep((long)(64 * MS_PER_INCHES));
         }
         drive.stop();
         if (wobbleGoalTarget == 1) {
             drive.strafeLeftWithPower(POWER);
-            sleep((long)(20 * MS_PER_INCHES));
+            sleep((long)(12 * MS_PER_INCHES));
             drive.stop();
         } else {
             drive.strafeRightWithPower(POWER);
