@@ -70,6 +70,17 @@ public class StandardOpMode extends LinearOpMode {
             } else {
                 wobble.stopArm();
             }
+            if (gamepad1.b) {
+                for (int i = 0; i < 3; ++i) {
+                    // Thwack thwack thwack
+                    // sleep(200);
+                    shooterServo.setPower(1);
+                    sleep(220);
+                    shooterServo.setPower(-1);
+                    sleep(220);
+                    shooterServo.setPower(0);
+                }
+            }
             if (gamepad1.dpad_left) {
                 wobble.release();
             } else if (gamepad1.dpad_right) {
