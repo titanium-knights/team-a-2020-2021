@@ -89,13 +89,27 @@ public class StandardOpMode extends LinearOpMode {
             if (shooterIsShooting) shooterMotor.setPower(-1); else shooterMotor.setPower(0);
 
             if (gamepad2.dpad_up) {
-                // move forward with power;
+                while (gamepad2.dpad_up) {
+                    drive.forwardWithPower(69);
+                }
+                drive.forwardWithPower(0);
             } else if (gamepad2.dpad_down) {
-                // move back with power;
+                while (gamepad2.dpad_up) {
+                    drive.forwardWithPower(-69);
+                }
+                drive.forwardWithPower(0);
             } else if (gamepad2.dpad_left){
-                // move left with power;
+                while (gamepad2.dpad_up) {
+                    drive.strafeLeftWithPower(69);
+                }
+                drive.strafeLeftWithPower(0);
+            } else if (gamepad2.dpad_right){
+                while (gamepad2.dpad_up) {
+                    drive.strafeRightWithPower(69);
+                }
+                drive.strafeRightWithPower(0);
             }
-                wobble.stopArm();
+
             /*
             // Todo: Uncomment this and remove the old code when you want to test the Shooter class
             // Toggle shooter power and controls the pinball as necessary.
