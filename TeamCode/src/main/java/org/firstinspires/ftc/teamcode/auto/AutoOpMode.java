@@ -13,8 +13,6 @@ import org.firstinspires.ftc.teamcode.util.*;
 public class AutoOpMode extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        // make sure to angle robot right - curve will be fixed at a later date
-        // TODO for hardware team
 
         double MS_PER_INCHES = 1000/77.0;
         double POWER = 1;
@@ -38,13 +36,13 @@ public class AutoOpMode extends LinearOpMode {
         /* arm.setPower(-1);
         grabber.setPower(1); */
 
-        wobbleGoal.liftArm();
+        //wobbleGoal.lowerArm();
 
         waitForStart();
 
         shooter.setPower(-1);
         drive.forwardWithPower(POWER);
-        sleep((long)(37 * MS_PER_INCHES));
+        sleep((long)(32 * MS_PER_INCHES));
         drive.stop();
 
         double bottom = bottomSensor.getDistance(DistanceUnit.INCH);
@@ -62,19 +60,23 @@ public class AutoOpMode extends LinearOpMode {
         }
 
         // Movey move
-        shooter.setPower(-1);
-        drive.forwardWithPower(POWER);
-        sleep((long)(33 * MS_PER_INCHES));
+        // shooter.setPower(-1);
+        drive.strafeLeftWithPower(POWER);
+        sleep((long)(49 * MS_PER_INCHES));
         drive.stop();
+        drive.forwardWithPower(POWER);
+        sleep((long)(29 * MS_PER_INCHES));
+        drive.stop();
+        sleep(500);
 
         // Shooty shoot
         for (int i = 0; i < 3; ++i) {
             // Thwack thwack thwack
-            sleep(400);
+            // sleep(200);
             shooterServo.setPower(1);
-            sleep(200);
+            sleep(220);
             shooterServo.setPower(-1);
-            sleep(200);
+            sleep(220);
             shooterServo.setPower(0);
             //sleep(300);
         }
@@ -93,22 +95,21 @@ public class AutoOpMode extends LinearOpMode {
         drive.stop();
         if (wobbleGoalTarget == 1) {
             drive.strafeLeftWithPower(POWER);
-            sleep((long)(30 * MS_PER_INCHES));
+            sleep((long)(20 * MS_PER_INCHES));
             drive.stop();
         } else {
             drive.strafeRightWithPower(POWER);
-            sleep((long)(40 * MS_PER_INCHES));
+            sleep((long)(60 * MS_PER_INCHES));
             drive.stop();
         }
 
-        wobbleGoal.lowerArm();
-        sleep(500);
+        wobbleGoal.liftArm();
+        sleep(2000);
         wobbleGoal.stopArm();
         wobbleGoal.release();
-        sleep(200);
         wobbleGoal.stopGrabber();
-        wobbleGoal.liftArm();
-        sleep(500);
+        wobbleGoal.lowerArm();
+        sleep(1000);
         wobbleGoal.stopArm();
 
         if (wobbleGoalTarget == 0) {

@@ -43,7 +43,7 @@ public class DriveConstants {
      * angular distances although most angular parameters are wrapped in Math.toRadians() for
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
-    public static double WHEEL_RADIUS = 2.17; // in
+    public static double WHEEL_RADIUS = 1.97; // in
     public static double GEAR_RATIO = 1 / 19.2; // output (wheel) speed / input (motor) speed
     public static double TRACK_WIDTH = 13; // in
 
@@ -54,8 +54,8 @@ public class DriveConstants {
      * empirically tuned.
      */
     public static double kV = 0.0157; // 1.0 / rpmToVelocity(MAX_RPM);
-    public static double kA = 0.00021; // R^2 = 0.03
-    public static double kStatic = 0.092; // R^2 = 0.99
+    public static double kA = 0.00048; // R^2 = 0.03
+    public static double kStatic = 0.089; // R^2 = 0.99
 
     /*
      * These values are used to generate the trajectories for you robot. To ensure proper operation,
