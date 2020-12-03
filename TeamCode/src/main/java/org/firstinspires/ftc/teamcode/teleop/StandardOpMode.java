@@ -18,7 +18,7 @@ public class StandardOpMode extends LinearOpMode {
     private MecanumDrive drive;
     private Intake intake;
     private Shooter shooter;
-    private ElapseTime timer = new ElapseTime();
+    private ElapsedTime timer = new ElapsedTime();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -58,12 +58,12 @@ public class StandardOpMode extends LinearOpMode {
             // Toggles power and direction of the intake motors.
             if (gm1.left_bumper.pressed()) intake.togglePower();
             if (gm1.right_bumper.pressed()) intake.toggleDirection();
-            if (gm1.x.pressed()) shooterIsShooting = !shooterIsShooting;
-            if (gamepad1.y) {
+            if (gm2.x.pressed()) shooterIsShooting = !shooterIsShooting;
+            if (gamepad2.y) {
                 shooterServo.setPower(0.5);
 //                ElapsedTime.MILLIS_IN_NANO(5000);
 //                shooterServo.setPower(-0.5);
-            } else if (gamepad1.a) {
+            } else if (gamepad2.a) {
                 shooterServo.setPower(-0.5);
 //                ElapsedTime.MILLIS_IN_NANO(5000);
 //                shooterServo.setPower(0.5);
@@ -88,26 +88,16 @@ public class StandardOpMode extends LinearOpMode {
 
             if (shooterIsShooting) shooterMotor.setPower(-1); else shooterMotor.setPower(0);
 
-            if (gamepad2.dpad_up) {
-                while (gamepad2.dpad_up) {
-                    drive.forwardWithPower(69);
-                }
+            if (Math.abs(gamepad2.left_stick_y) > 0.2) {
+                drive.forwardWithPower(gamepad2.left_stick_y);
+            } else if ((gamepad2.left_stick_x) < -0.2) {
+                drive.strafeLeftWithPower(-gamepad2.left_stick_x);
+            } else if ((gamepad2.left_stick_x) > 0.2) {
+                drive.strafeRightWithPower(gamepad2.left_stick_x);
+            } else {
                 drive.forwardWithPower(0);
-            } else if (gamepad2.dpad_down) {
-                while (gamepad2.dpad_up) {
-                    drive.forwardWithPower(-69);
-                }
-                drive.forwardWithPower(0);
-            } else if (gamepad2.dpad_left){
-                while (gamepad2.dpad_up) {
-                    drive.strafeLeftWithPower(69);
-                }
-                drive.strafeLeftWithPower(0);
-            } else if (gamepad2.dpad_right){
-                while (gamepad2.dpad_up) {
-                    drive.strafeRightWithPower(69);
-                }
                 drive.strafeRightWithPower(0);
+                drive.strafeLeftWithPower(0);
             }
 
             /*
