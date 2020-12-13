@@ -13,14 +13,12 @@ import org.firstinspires.ftc.teamcode.util.*;
 public class AutoOpMode extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        // make sure to angle robot right - curve will be fixed at a later date
-        // TODO for hardware team
 
-        double MS_PER_INCHES = 1000/77.0;
+        double MS_PER_INCHES = 1000 / 77.0;
         double POWER = 1;
 
         MecanumDrive drive = MecanumDrive.standard(hardwareMap);
-        for (DcMotor motor: drive.getMotors()) {
+        for (DcMotor motor : drive.getMotors()) {
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 
@@ -38,97 +36,117 @@ public class AutoOpMode extends LinearOpMode {
         /* arm.setPower(-1);
         grabber.setPower(1); */
 
-        wobbleGoal.liftArm();
+        //wobbleGoal.lowerArm();
+
 
         waitForStart();
 
         shooter.setPower(-1);
-        drive.forwardWithPower(POWER);
-        sleep((long)(37 * MS_PER_INCHES));
+        drive.forwardWithPower(0.5);
+        sleep((long)(80 * MS_PER_INCHES));
         drive.stop();
+        sleep (500);
 
         double bottom = bottomSensor.getDistance(DistanceUnit.INCH);
         double top = topSensor.getDistance(DistanceUnit.INCH);
 
-                telemetry.addData("b", bottom);
-                telemetry.addData("t", top);
-                telemetry.update();
+        telemetry.addData("b", bottom);
+        telemetry.addData("t", top);
 
-        if (bottom < 12) {
-            wobbleGoalTarget = 1;
-        }
-        if (top < 14) {
+        if ((5 >= top && top >= 1) && (5 >= bottom && bottom >= 1)) {
             wobbleGoalTarget = 2;
         }
+        else if ((8 >= bottom && bottom >= 4) && (top > 5)) {
+            wobbleGoalTarget = 1;
+        }
+        telemetry.addData("Pos", wobbleGoalTarget);
+
+        telemetry.update();
+
 
         // Movey move
-        shooter.setPower(-1);
-        drive.forwardWithPower(POWER);
-        sleep((long)(33 * MS_PER_INCHES));
+        // shooter.setPower(-1);
+        drive.strafeLeftWithPower(POWER);
+        sleep((long)(40 * MS_PER_INCHES));
         drive.stop();
+        sleep(100);
+
+        drive.forwardWithPower(POWER);
+        sleep((long)(45 * MS_PER_INCHES));
+        drive.stop();
+        sleep(100);
+
+        drive.strafeRightWithPower(POWER);
+        sleep((long)(10 * MS_PER_INCHES));
+        drive.stop();
+        sleep(100);
 
         // Shooty shoot
         for (int i = 0; i < 3; ++i) {
             // Thwack thwack thwack
-            sleep(400);
+            // sleep(200);
             shooterServo.setPower(1);
-            sleep(200);
+            sleep(220);
             shooterServo.setPower(-1);
             sleep(200);
             shooterServo.setPower(0);
-            //sleep(300);
         }
+
+        sleep(300);
 
         shooter.setPower(0);
 
         // Parky park
         drive.forwardWithPower(POWER);
         if (wobbleGoalTarget == 0) {
-            sleep((long)(26 * MS_PER_INCHES));
+            sleep((long)(12 * MS_PER_INCHES));
         } else if (wobbleGoalTarget == 1) {
-            sleep((long)(57 * MS_PER_INCHES));
+            sleep((long)(40 * MS_PER_INCHES));
         } else if (wobbleGoalTarget == 2) {
-            sleep((long)(90 * MS_PER_INCHES));
+            sleep((long)(60 * MS_PER_INCHES));
         }
+        sleep(100);
         drive.stop();
         if (wobbleGoalTarget == 1) {
             drive.strafeLeftWithPower(POWER);
-            sleep((long)(30 * MS_PER_INCHES));
+            sleep((long)(32 * MS_PER_INCHES));
             drive.stop();
         } else {
             drive.strafeRightWithPower(POWER);
-            sleep((long)(40 * MS_PER_INCHES));
+            sleep((long)(50 * MS_PER_INCHES));
             drive.stop();
         }
-
-        wobbleGoal.lowerArm();
-        sleep(500);
-        wobbleGoal.stopArm();
-        wobbleGoal.release();
-        sleep(200);
-        wobbleGoal.stopGrabber();
+        //the wobble arms movements are actually all reversed bc of added gears
         wobbleGoal.liftArm();
-        sleep(500);
+        wobbleGoal.release();
+        wobbleGoal.stopGrabber();
+        sleep(2000);
+        wobbleGoal.lowerArm();
+        sleep(1000);
         wobbleGoal.stopArm();
 
         if (wobbleGoalTarget == 0) {
             drive.forwardWithPower(-POWER);
-            sleep((long)(14 * MS_PER_INCHES));
+            sleep((long)(8 * MS_PER_INCHES));
+            sleep(100);
             drive.strafeRightWithPower(-POWER);
             sleep((long)(12 * MS_PER_INCHES));
             drive.stop();
         } else if (wobbleGoalTarget == 1) {
             drive.forwardWithPower(-POWER);
-            sleep((long)(35 * MS_PER_INCHES));
+            sleep((long)(24 * MS_PER_INCHES));
+            sleep(100);
             drive.strafeRightWithPower(POWER);
-            sleep((long)(30 * MS_PER_INCHES));
+            sleep((long)(18 * MS_PER_INCHES));
             drive.stop();
         } else if (wobbleGoalTarget == 2) {
             drive.forwardWithPower(-POWER);
-            sleep((long)(40 * MS_PER_INCHES));
+            sleep((long)(60 * MS_PER_INCHES));
+            sleep(100);
             drive.strafeRightWithPower(-POWER);
             sleep((long)(40 * MS_PER_INCHES));
             drive.stop();
+            
         }
     }
 }
