@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.auto;
 
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.acmerobotics.roadrunner.trajectory.config.TrajectoryConfig;
@@ -94,5 +95,9 @@ public class PathTestOpMode extends LinearOpMode {
         shooter.setPower(0);
 
         drive.followTrajectory(trajectories[wobbleGoalTarget]);
+
+        TrajectoryBuilder parkBuilder = drive.trajectoryBuilder(drive.getPoseEstimate());
+        parkBuilder.lineTo(new Vector2d(12, drive.getPoseEstimate().getY()));
+        drive.followTrajectory(parkBuilder.build());
     }
 }
