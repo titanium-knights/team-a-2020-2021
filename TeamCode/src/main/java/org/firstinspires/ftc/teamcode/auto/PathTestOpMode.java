@@ -61,6 +61,11 @@ public class PathTestOpMode extends LinearOpMode {
                 loadTrajectory("redb", groupConfig),
                 loadTrajectory("redc", groupConfig)
         };
+        Trajectory[] trajectories2 = {
+                loadTrajectory("red2a", groupConfig),
+                null,
+                null
+        };
 
         waitForStart();
 
@@ -125,7 +130,11 @@ public class PathTestOpMode extends LinearOpMode {
         wobbleGoal.liftArm();
         sleep(1000);
 
-        //add last spline
+        drive.followTrajectory(trajectories2[wobbleGoalTarget]);
+        wobbleGoal.lowerArm();
+        claw.setPosition(1);
+        sleep(1000);
+        wobbleGoal.stopArm();
 
         //add parking thing
     }
