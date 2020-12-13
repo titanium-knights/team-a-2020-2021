@@ -67,6 +67,9 @@ public class PathTestOpMode extends LinearOpMode {
                 null
         };
 
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
         waitForStart();
 
         if (isStopRequested()) return;
