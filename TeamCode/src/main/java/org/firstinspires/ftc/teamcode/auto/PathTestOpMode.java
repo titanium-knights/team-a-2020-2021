@@ -119,6 +119,8 @@ public class PathTestOpMode extends LinearOpMode {
         nextBuilder.splineToLinearHeading(new Pose2d(-42, -11, Math.PI), Math.PI);
         drive.followTrajectory(nextBuilder.build());
 
+        wobbleGoal.lowerArm();
+        sleep(2000);
         claw.setPosition(0);
         sleep(1000);
     }
