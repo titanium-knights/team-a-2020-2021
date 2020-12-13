@@ -74,7 +74,7 @@ public class PathTestOpMode extends LinearOpMode {
 
         double bottom = bottomSensor.getDistance(DistanceUnit.INCH);
         double top = topSensor.getDistance(DistanceUnit.INCH);
-        if ((6.5 >= top && top >= 1) && (5 >= bottom && bottom >= 1)) {
+        if ((6.5 >= top && top >= 1) && (6 >= bottom && bottom >= 1)) {
             wobbleGoalTarget = 2;
         }
         else if ((9.5 >= bottom && bottom >= 6) && (top > 5)) {
@@ -114,7 +114,7 @@ public class PathTestOpMode extends LinearOpMode {
         wobbleGoal.liftArm();
         sleep(1000);
 
-        TrajectoryBuilder nextBuilder = drive.trajectoryBuilder(drive.getPoseEstimate(), Math.PI);
+        TrajectoryBuilder nextBuilder = drive.trajectoryBuilder(drive.getPoseEstimate(), drive.getPoseEstimate().getHeading());
         nextBuilder.splineToLinearHeading(new Pose2d(12, -11, Math.PI), Math.PI);
         nextBuilder.splineToLinearHeading(new Pose2d(-42, -11, Math.PI), Math.PI);
         drive.followTrajectory(nextBuilder.build());
