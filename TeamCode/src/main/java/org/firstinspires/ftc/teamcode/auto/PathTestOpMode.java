@@ -11,8 +11,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.util.WobbleGoal;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,6 +50,9 @@ public class PathTestOpMode extends LinearOpMode {
 
         DcMotor shooter = hardwareMap.dcMotor.get("shooter");
         CRServo shooterServo = hardwareMap.crservo.get("pinball");
+
+        WobbleGoal wobbleGoal = WobbleGoal.standard(hardwareMap);
+        Servo claw = hardwareMap.servo.get("wobble");
 
         TrajectoryGroupConfig groupConfig = loadGroupConfig();
         Trajectory preScan = loadTrajectory("redprescan", groupConfig);
@@ -101,6 +106,12 @@ public class PathTestOpMode extends LinearOpMode {
         shooter.setPower(0);
 
         drive.followTrajectory(trajectories[wobbleGoalTarget]);
+
+        wobbleGoal.lowerArm();
+        sleep(2000);
+        wobbleGoal.stopArm();
+        claw.setPosition(1);
+        sleep(1000);
 
         TrajectoryBuilder parkBuilder = drive.trajectoryBuilder(drive.getPoseEstimate());
         parkBuilder.lineTo(new Vector2d(12, drive.getPoseEstimate().getY()));

@@ -25,11 +25,11 @@ public class WobbleGoal {
     }
 
     public void liftArm() {
-        this.arm.setPower(-1);
+        this.arm.setPower(1);
     }
 
     public void lowerArm() {
-        this.arm.setPower(1);
+        this.arm.setPower(-1);
     }
 
     public void stopArm() {
@@ -37,6 +37,6 @@ public class WobbleGoal {
     }
 
     public static WobbleGoal standard(HardwareMap hardwareMap) {
-        return new WobbleGoal(hardwareMap.crservo.get("wobble_arm"), hardwareMap.crservo.get("wobble"));
+        return new WobbleGoal(hardwareMap.crservo.get("wobble_arm"), null);
     }
 }
