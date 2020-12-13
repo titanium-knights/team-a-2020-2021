@@ -17,8 +17,6 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.util.WobbleGoal;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Autonomous(name = "Path Test Op Moded")
 public class PathTestOpMode extends LinearOpMode {
@@ -75,7 +73,7 @@ public class PathTestOpMode extends LinearOpMode {
 
         double bottom = bottomSensor.getDistance(DistanceUnit.INCH);
         double top = topSensor.getDistance(DistanceUnit.INCH);
-        if ((5 >= top && top >= 1) && (5 >= bottom && bottom >= 1)) {
+        if ((6.5 >= top && top >= 1) && (5 >= bottom && bottom >= 1)) {
             wobbleGoalTarget = 2;
         }
         else if ((9.5 >= bottom && bottom >= 6) && (top > 5)) {
@@ -111,6 +109,8 @@ public class PathTestOpMode extends LinearOpMode {
         sleep(2000);
         wobbleGoal.stopArm();
         claw.setPosition(1);
+        sleep(1000);
+        wobbleGoal.liftArm();
         sleep(1000);
 
         TrajectoryBuilder parkBuilder = drive.trajectoryBuilder(drive.getPoseEstimate());
