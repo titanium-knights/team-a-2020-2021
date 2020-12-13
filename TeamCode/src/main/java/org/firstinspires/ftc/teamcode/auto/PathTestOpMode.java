@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.auto;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
@@ -114,7 +115,7 @@ public class PathTestOpMode extends LinearOpMode {
         sleep(1000);
 
         TrajectoryBuilder nextBuilder = drive.trajectoryBuilder(drive.getPoseEstimate());
-        nextBuilder.strafeTo(new Vector2d(12, -11));
+        nextBuilder.splineToLinearHeading(new Pose2d(12, -11, Math.PI), Math.PI);
         nextBuilder.lineTo(new Vector2d(-42, -11));
         drive.followTrajectory(nextBuilder.build());
 
