@@ -87,8 +87,9 @@ public class PathTestOpMode extends LinearOpMode {
             shooterServo.setPower(-1);
             sleep(200);
             shooterServo.setPower(0);
-            //sleep(300);
         }
+
+        sleep(300);
 
         shooter.setPower(0);
 
