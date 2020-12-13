@@ -16,6 +16,7 @@ public class StandardOpMode extends LinearOpMode {
     private MecanumDrive drive;
     private Intake intake;
     private Shooter shooter;
+    private boolean slowMode = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -48,9 +49,16 @@ public class StandardOpMode extends LinearOpMode {
             if (Math.abs(strafe) < JOYSTICK_SENSITIVITY) strafe = 0;
             if (Math.abs(speed) < JOYSTICK_SENSITIVITY) speed = 0;
 
+            if (slowMode) {
+                turn *= 0.3;
+                strafe *= 0.3;
+                speed *= 0.3;
+            }
+
             // Drives in the inputted direction.
             MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, speed);
             drive.move(1, vector, turn);
+            if (gm1.left_stick_button.pressed()) slowMode = !slowMode;
 
             // Toggles power and direction of the intake motors.
             if (gm1.left_bumper.pressed()) intake.togglePower();
@@ -71,15 +79,11 @@ public class StandardOpMode extends LinearOpMode {
                 wobble.stopArm();
             }
             if (gamepad1.b) {
-                for (int i = 0; i < 3; ++i) {
-                    // Thwack thwack thwack
-                    // sleep(200);
-                    shooterServo.setPower(1);
-                    sleep(220);
-                    shooterServo.setPower(-1);
-                    sleep(220);
-                    shooterServo.setPower(0);
-                }
+                shooterServo.setPower(1);
+                sleep(220);
+                shooterServo.setPower(-1);
+                sleep(220);
+                shooterServo.setPower(0);
             }
             if (gamepad1.dpad_left) {
                 wobble.release();

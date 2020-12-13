@@ -25,7 +25,7 @@ public class GamepadManager {
 
     private Gamepad gamepad;
 
-    public GMButton a, b, x, y, left_bumper, right_bumper, dpad_up, dpad_down;
+    public GMButton a, b, x, y, left_bumper, right_bumper, dpad_up, dpad_down, left_stick_button;
 
     public GamepadManager (Gamepad gamepad) {
         this.gamepad = gamepad;
@@ -38,6 +38,7 @@ public class GamepadManager {
         right_bumper = new GMButton();
         dpad_up = new GMButton();
         dpad_down = new GMButton();
+        left_stick_button = new GMButton();
     }
 
     public void updateAll() {
@@ -49,6 +50,7 @@ public class GamepadManager {
         right_bumper.setPos(gamepad.right_bumper);
         dpad_up.setPos(gamepad.dpad_up);
         dpad_down.setPos(gamepad.dpad_down);
+        left_stick_button.setPos(gamepad.left_stick_button);
     }
 
 }
