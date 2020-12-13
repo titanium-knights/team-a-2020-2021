@@ -10,6 +10,6 @@ waypoints:
     y: -44.0
   heading: 3.141592653589793
   tangent: 0.0
-  interpolationType: "TANGENT"
+  interpolationType: "LINEAR"
 resolution: 0.25
 version: 1
