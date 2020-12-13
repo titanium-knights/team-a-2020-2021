@@ -73,7 +73,7 @@ public class PathTestOpMode extends LinearOpMode {
         if ((5 >= top && top >= 1) && (5 >= bottom && bottom >= 1)) {
             wobbleGoalTarget = 2;
         }
-        else if ((8 >= bottom && bottom >= 4) && (top > 5)) {
+        else if ((9.5 >= bottom && bottom >= 6) && (top > 5)) {
             wobbleGoalTarget = 1;
         }
 
@@ -93,9 +93,10 @@ public class PathTestOpMode extends LinearOpMode {
             shooterServo.setPower(-1);
             sleep(200);
             shooterServo.setPower(0);
+            sleep(300);
         }
 
-        sleep(1000);
+        sleep(700);
 
         shooter.setPower(0);
 
