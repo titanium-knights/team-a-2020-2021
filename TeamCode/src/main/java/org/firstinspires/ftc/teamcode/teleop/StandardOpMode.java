@@ -49,16 +49,12 @@ public class StandardOpMode extends LinearOpMode {
             if (Math.abs(strafe) < JOYSTICK_SENSITIVITY) strafe = 0;
             if (Math.abs(speed) < JOYSTICK_SENSITIVITY) speed = 0;
 
-            if (slowMode) {
-                turn *= 0.3;
-                strafe *= 0.3;
-                speed *= 0.3;
-            }
-
             // Drives in the inputted direction.
             MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, speed);
-            drive.move(1, vector, turn);
+            drive.move(slowMode ? 0.3 : 1.0, vector, turn);
             if (gm1.left_stick_button.pressed()) slowMode = !slowMode;
+            telemetry.addData("Slow Mode", slowMode ? "Yes" : "No");
+            telemetry.update();
 
             // Toggles power and direction of the intake motors.
             if (gm1.left_bumper.pressed()) intake.togglePower();
