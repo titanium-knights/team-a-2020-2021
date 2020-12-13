@@ -127,7 +127,7 @@ public class PathTestOpMode extends LinearOpMode {
 
         TrajectoryBuilder nextBuilder = drive.trajectoryBuilder(drive.getPoseEstimate(), Math.PI);
         // nextBuilder.splineToLinearHeading(new Pose2d(12, -11, Math.PI), Math.PI);
-        nextBuilder.splineToLinearHeading(new Pose2d(-41, -12.5, Math.PI), Math.PI);
+        nextBuilder.splineToLinearHeading(new Pose2d(-42, -12.5, Math.PI), Math.PI);
         nextBuilder.addTemporalMarker(0.5, wobbleGoal::lowerArm);
         nextBuilder.addTemporalMarker(2.5, wobbleGoal::stopArm);
         drive.followTrajectory(nextBuilder.build());
@@ -143,7 +143,7 @@ public class PathTestOpMode extends LinearOpMode {
         sleep(800);
         wobbleGoal.stopArm();
         wobbleGoal.liftArm();
-        sleep(1000);
+        sleep(800);
 
         TrajectoryBuilder parkBuilder = drive.trajectoryBuilder(drive.getPoseEstimate(), Math.PI);
         parkBuilder.splineToLinearHeading(new Pose2d(wobbleGoalTarget == 2 ? 3 : 12, wobbleGoalTarget == 2 ? -36 : -12, Math.PI), Math.PI);
