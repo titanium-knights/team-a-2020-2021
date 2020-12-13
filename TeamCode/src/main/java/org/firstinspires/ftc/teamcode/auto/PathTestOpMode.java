@@ -85,7 +85,7 @@ public class PathTestOpMode extends LinearOpMode {
         if ((6.5 >= top && top >= 1) && (6 >= bottom && bottom >= 1)) {
             wobbleGoalTarget = 2;
         }
-        else if ((9 >= bottom && bottom >= 6) && (top > 5)) {
+        else if ((9 >= bottom && bottom >= 5) && (top > 5)) {
             wobbleGoalTarget = 1;
         }
 
