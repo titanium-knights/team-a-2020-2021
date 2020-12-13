@@ -14,6 +14,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Autonomous(name = "Path Test Op Moded")
 public class PathTestOpMode extends LinearOpMode {
@@ -49,6 +51,11 @@ public class PathTestOpMode extends LinearOpMode {
         TrajectoryGroupConfig groupConfig = loadGroupConfig();
         Trajectory preScan = loadTrajectory("redprescan", groupConfig);
         Trajectory shoot = loadTrajectory("redshoot", groupConfig);
+        Trajectory[] trajectories = {
+                loadTrajectory("reda", groupConfig),
+                loadTrajectory("redb", groupConfig),
+                loadTrajectory("redc", groupConfig)
+        };
 
         waitForStart();
 
@@ -84,5 +91,7 @@ public class PathTestOpMode extends LinearOpMode {
         }
 
         shooter.setPower(0);
+
+        drive.followTrajectory(trajectories[wobbleGoalTarget]);
     }
 }
