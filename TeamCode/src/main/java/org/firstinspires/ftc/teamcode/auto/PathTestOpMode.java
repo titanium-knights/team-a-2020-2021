@@ -114,7 +114,7 @@ public class PathTestOpMode extends LinearOpMode {
         sleep(1000);
 
         TrajectoryBuilder nextBuilder = drive.trajectoryBuilder(drive.getPoseEstimate());
-        nextBuilder.lineTo(new Vector2d(12, -11));
+        nextBuilder.strafeTo(new Vector2d(12, -11));
         nextBuilder.lineTo(new Vector2d(-42, -11));
         drive.followTrajectory(nextBuilder.build());
 
