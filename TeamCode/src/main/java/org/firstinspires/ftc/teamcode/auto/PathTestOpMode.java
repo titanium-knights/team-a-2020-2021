@@ -64,7 +64,7 @@ public class PathTestOpMode extends LinearOpMode {
         Trajectory[] trajectories2 = {
                 loadTrajectory("red2a", groupConfig),
                 loadTrajectory("red2b", groupConfig),
-                null
+                loadTrajectory("red2c", groupConfig)
         };
 
         telemetry.addData("Status", "Initialized");
