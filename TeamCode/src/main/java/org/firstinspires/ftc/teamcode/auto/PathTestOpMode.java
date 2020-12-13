@@ -95,7 +95,7 @@ public class PathTestOpMode extends LinearOpMode {
         telemetry.update();
 
         if (wobbleGoalTarget == 0) {
-            drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate(), 0).splineToLinearHeading(shoot.end(), 0).build());
+            drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate(), 0).splineToLinearHeading(new Pose2d(-7, -32, Math.PI), 0).build());
         } else {
             drive.followTrajectory(shoot);
         }
@@ -124,6 +124,12 @@ public class PathTestOpMode extends LinearOpMode {
         wobbleGoal.stopArm();
         wobbleGoal.liftArm();
         sleep(500);
+
+        if (wobbleGoalTarget == 1) {
+            TrajectoryBuilder adjustmentBuilder = drive.trajectoryBuilder(drive.getPoseEstimate(), Math.PI);
+            adjustmentBuilder.splineToLinearHeading(new Pose2d(11, -46, Math.PI), Math.PI);
+            drive.followTrajectory(adjustmentBuilder.build());
+        }
 
         TrajectoryBuilder nextBuilder = drive.trajectoryBuilder(drive.getPoseEstimate(), Math.PI);
         // nextBuilder.splineToLinearHeading(new Pose2d(12, -11, Math.PI), Math.PI);
