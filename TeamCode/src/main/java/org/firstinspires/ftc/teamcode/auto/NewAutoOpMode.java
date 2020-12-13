@@ -2,15 +2,16 @@ package org.firstinspires.ftc.teamcode.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.Servo;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.util.*;
 
-@Autonomous(name = "Auto Op Mode")
-public class AutoOpMode extends LinearOpMode {
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.util.MecanumDrive;
+import org.firstinspires.ftc.teamcode.util.WobbleGoal;
+
+@Autonomous(name = "New Auto Op Mode")
+public class NewAutoOpMode extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -56,7 +57,7 @@ public class AutoOpMode extends LinearOpMode {
         if ((5 >= top && top >= 1) && (5 >= bottom && bottom >= 1)) {
             wobbleGoalTarget = 2;
         }
-        else if ((9.8 >= bottom && bottom >= 7) && (top > 5)) {
+        else if ((9.5 >= bottom && bottom >= 6) && (top > 5)) {
             wobbleGoalTarget = 1;
         }
         telemetry.addData("Pos", wobbleGoalTarget);
@@ -77,7 +78,7 @@ public class AutoOpMode extends LinearOpMode {
         sleep(100);
 
         drive.strafeRightWithPower(POWER);
-        sleep((long)(10 * MS_PER_INCHES));
+        sleep((long)(18 * MS_PER_INCHES));
         drive.stop();
         sleep(100);
 
@@ -88,11 +89,10 @@ public class AutoOpMode extends LinearOpMode {
             shooterServo.setPower(1);
             sleep(220);
             shooterServo.setPower(-1);
-            sleep(220);
+            sleep(250);
             shooterServo.setPower(0);
+            //sleep(300);
         }
-
-        sleep(300);
 
         shooter.setPower(0);
 
@@ -103,7 +103,7 @@ public class AutoOpMode extends LinearOpMode {
         } else if (wobbleGoalTarget == 1) {
             sleep((long)(40 * MS_PER_INCHES));
         } else if (wobbleGoalTarget == 2) {
-            sleep((long)(60 * MS_PER_INCHES));
+            sleep((long)(55 * MS_PER_INCHES));
         }
         sleep(100);
         drive.stop();
@@ -147,5 +147,5 @@ public class AutoOpMode extends LinearOpMode {
             sleep((long)(40 * MS_PER_INCHES));
             drive.stop();
             */
-        }
     }
+}
