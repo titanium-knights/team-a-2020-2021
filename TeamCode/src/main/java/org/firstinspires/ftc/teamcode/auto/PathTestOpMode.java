@@ -63,7 +63,7 @@ public class PathTestOpMode extends LinearOpMode {
         };
         Trajectory[] trajectories2 = {
                 loadTrajectory("red2a", groupConfig),
-                null,
+                loadTrajectory("red2b", groupConfig),
                 null
         };
 
@@ -82,7 +82,7 @@ public class PathTestOpMode extends LinearOpMode {
         if ((6.5 >= top && top >= 1) && (6 >= bottom && bottom >= 1)) {
             wobbleGoalTarget = 2;
         }
-        else if ((9.5 >= bottom && bottom >= 6) && (top > 5)) {
+        else if ((9 >= bottom && bottom >= 6) && (top > 5)) {
             wobbleGoalTarget = 1;
         }
 
@@ -91,7 +91,11 @@ public class PathTestOpMode extends LinearOpMode {
         telemetry.addData("Pos", wobbleGoalTarget);
         telemetry.update();
 
-        drive.followTrajectory(shoot);
+        if (wobbleGoalTarget == 0) {
+            drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate(), 0).splineToLinearHeading(shoot.end(), 0).build());
+        } else {
+            drive.followTrajectory(shoot);
+        }
 
         // Shooty shoot
         for (int i = 0; i < 3; ++i) {
@@ -120,7 +124,7 @@ public class PathTestOpMode extends LinearOpMode {
 
         TrajectoryBuilder nextBuilder = drive.trajectoryBuilder(drive.getPoseEstimate(), Math.PI);
         // nextBuilder.splineToLinearHeading(new Pose2d(12, -11, Math.PI), Math.PI);
-        nextBuilder.splineToLinearHeading(new Pose2d(-42, -11.5, Math.PI), Math.PI);
+        nextBuilder.splineToLinearHeading(new Pose2d(-41, -11.5, Math.PI), Math.PI);
         nextBuilder.addTemporalMarker(0.5, wobbleGoal::lowerArm);
         nextBuilder.addTemporalMarker(2.5, wobbleGoal::stopArm);
         drive.followTrajectory(nextBuilder.build());
@@ -136,7 +140,8 @@ public class PathTestOpMode extends LinearOpMode {
         sleep(1000);
         wobbleGoal.stopArm();
         wobbleGoal.liftArm();
-        sleep(800);
+        sleep(1000);
+        wobbleGoal.stopArm();
 
         TrajectoryBuilder parkBuilder = drive.trajectoryBuilder(drive.getPoseEstimate(), Math.PI);
         parkBuilder.splineToLinearHeading(new Pose2d(12, -12, Math.PI), Math.PI);
