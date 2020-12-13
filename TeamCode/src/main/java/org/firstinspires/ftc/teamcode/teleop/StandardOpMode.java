@@ -51,7 +51,7 @@ public class StandardOpMode extends LinearOpMode {
 
             // Drives in the inputted direction.
             MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, speed);
-            drive.move(slowMode ? 0.3 : 1.0, vector, turn);
+            drive.move(slowMode ? 0.3 : 1.0, vector, turn * (slowMode ? 0.3 : 1.0));
             if (gm1.left_stick_button.pressed()) slowMode = !slowMode;
             telemetry.addData("Slow Mode", slowMode ? "Yes" : "No");
             telemetry.update();
