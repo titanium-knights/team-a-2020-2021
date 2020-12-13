@@ -77,6 +77,11 @@ public class PathTestOpMode extends LinearOpMode {
             wobbleGoalTarget = 1;
         }
 
+        telemetry.addData("b", bottom);
+        telemetry.addData("t", top);
+        telemetry.addData("Pos", wobbleGoalTarget);
+        telemetry.update();
+
         drive.followTrajectory(shoot);
 
         // Shooty shoot
@@ -90,7 +95,7 @@ public class PathTestOpMode extends LinearOpMode {
             shooterServo.setPower(0);
         }
 
-        sleep(300);
+        sleep(1000);
 
         shooter.setPower(0);
 
