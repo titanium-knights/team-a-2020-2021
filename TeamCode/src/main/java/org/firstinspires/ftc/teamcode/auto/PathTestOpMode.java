@@ -148,7 +148,7 @@ public class PathTestOpMode extends LinearOpMode {
         claw.setPosition(0);
         sleep(1000);
         wobbleGoal.liftArm();
-        sleep(1000);
+        sleep(1500);
         wobbleGoal.stopArm();
 
         drive.followTrajectory(trajectories2[wobbleGoalTarget]);
