@@ -23,6 +23,7 @@ public class Shooter {
     public void toggleShooterPower () {
         isShooting = !isShooting;
         shooter.setPower(isShooting ? 1 : 0);
+        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     /**
