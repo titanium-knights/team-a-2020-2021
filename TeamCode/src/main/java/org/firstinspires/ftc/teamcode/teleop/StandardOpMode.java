@@ -60,9 +60,9 @@ public class StandardOpMode extends LinearOpMode {
             if (gm1.left_bumper.pressed()) intake.togglePower();
             if (gm1.right_bumper.pressed()) intake.toggleDirection();
             if (gm1.x.pressed()) shooterIsShooting = !shooterIsShooting;
-            if (gamepad1.y) {
+            if (gamepad1.left_trigger > 0.5) {
                 shooterServo.setPower(0.5);
-            } else if (gamepad1.a) {
+            } else if (gamepad1.right_trigger > 0.5) {
                 shooterServo.setPower(-0.5);
             } else {
                 shooterServo.setPower(0);
