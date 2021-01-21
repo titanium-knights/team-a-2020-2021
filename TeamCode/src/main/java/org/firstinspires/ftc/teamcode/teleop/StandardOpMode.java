@@ -29,10 +29,7 @@ public class StandardOpMode extends LinearOpMode {
         intake = Intake.standard(hardwareMap);
         shooter = Shooter.standard(hardwareMap);
 
-        // TODO: Make utility class - shooter.shoot() or something?
-        DcMotor shooterMotor = hardwareMap.dcMotor.get("shooter");
         CRServo shooterServo = hardwareMap.crservo.get("pinball");
-        boolean shooterIsShooting = false;
 
         WobbleGoal wobble = WobbleGoal.standard(hardwareMap);
 
@@ -58,7 +55,7 @@ public class StandardOpMode extends LinearOpMode {
             // Toggles power and direction of the intake motors.
             if (gm1.left_bumper.pressed()) intake.togglePower();
             if (gm1.right_bumper.pressed()) intake.toggleDirection();
-            if (gm2.x.pressed()) shooterIsShooting = !shooterIsShooting;
+            if (gm2.x.pressed()) shooter.toggleShooterPower();
             if (gamepad2.y) {
                 shooterServo.setPower(0.5);
 //                ElapsedTime.MILLIS_IN_NANO(5000);
@@ -96,9 +93,7 @@ public class StandardOpMode extends LinearOpMode {
             } else {
                 wobble.stopGrabber();
             }
-
-            if (shooterIsShooting) shooterMotor.setPower(-1); else shooterMotor.setPower(0);
-
+            
             /*
             // Todo: Uncomment this and remove the old code when you want to test the Shooter class
             // Toggle shooter power and controls the pinball as necessary.
