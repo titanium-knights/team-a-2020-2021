@@ -98,6 +98,29 @@ public class StandardOpMode extends LinearOpMode {
             if (gm1.x.pressed()) shooter.toggleShooterPower();
             shooter.nudgeRings(gamepad1.y, gamepad1.a);
              */
+            
+            /*
+            // Todo: Uncomment this and remove the old code when you want to test the Shooter class
+            // Toggle shooter power and controls the pinball as necessary.
+            
+            /*
+            // Todo: Uncomment this and remove the old code when you want to test the Shooter class
+            // Toggle shooter power and controls the pinball as necessary.
+            
+            /*
+            // Todo: Uncomment this and remove the old code when you want to test the Shooter class
+            // Toggle shooter power and controls the pinball as necessary.
+            
+            /*
+            // Todo: Uncomment this and remove the old code when you want to test the Shooter class
+            // Toggle shooter power and controls the pinball as necessary.
+            
+            /*
+            // Todo: Uncomment this and remove the old code when you want to test the Shooter class
+            // Toggle shooter power and controls the pinball as necessary.
+            if (gm1.x.pressed()) shooter.toggleShooterPower();
+            shooter.nudgeRings(gamepad1.y, gamepad1.a);
+             */
 
             // Update the GamepadManagers (should happen at the end or beginning of the loop)
             gm1.updateAll();
