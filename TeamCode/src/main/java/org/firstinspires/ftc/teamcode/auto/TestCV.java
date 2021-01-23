@@ -12,8 +12,8 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 
 @Autonomous(name = "Ring Pipeline Example")
 class UGContourRingPipelineJavaExample extends LinearOpMode {
-    private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
-    private static final int CAMERA_HEIGHT = 240; // height of wanted camera resolution
+    private static final int CAMERA_WIDTH = 640; // width  of wanted camera resolution
+    private static final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
 
     private static final int HORIZON = 100; // horizon value to tune
 
