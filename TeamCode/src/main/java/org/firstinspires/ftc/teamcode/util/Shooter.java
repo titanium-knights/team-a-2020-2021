@@ -7,14 +7,37 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Shooter {
 
-    DcMotor shooter;
+    private static final double RING_VEL = 60; // in in/s
+
+    DcMotor compliance;
     CRServo pinball;
+    int lastEncPos;
 
     private boolean isShooting;
 
-    public Shooter(DcMotor shooter, CRServo pinball) {
-        this.shooter = shooter;
+    public Shooter(DcMotor compliance, CRServo pinball) {
+        this.compliance = compliance;
         this.pinball = pinball;
+        this.lastEncPos = compliance.getCurrentPosition();
+
+        SpeedAdjuster adjuster = new SpeedAdjuster();
+        adjuster.start();
+    }
+
+    public class SpeedAdjuster extends Thread {
+
+        public void run() {
+            try {
+                while (true) {
+                    double currentVel = Math.abs(compliance.getCurrentPosition() - lastEncPos) / 0.5 * 0.008727; // in/sec
+                    double targetPower = Math.min(1, Math.max(-1, RING_VEL / currentVel * compliance.getPower()));
+                    compliance.setPower(targetPower);
+                    lastEncPos = compliance.getCurrentPosition();
+                    Thread.sleep(500);
+                }
+            } catch (Exception exc) { }
+        }
+
     }
 
     /**
@@ -22,8 +45,8 @@ public class Shooter {
      */
     public void toggleShooterPower () {
         isShooting = !isShooting;
-        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        shooter.setPower(isShooting ? 1 : 0);
+        compliance.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        compliance.setPower(isShooting ? 9 : 0);
     }
 
     /**
@@ -41,11 +64,15 @@ public class Shooter {
         }
     }
 
+    // 1440 ticks per rotation, 2 in radius compliance wheels
+    // 1440 ticks = 4*pi inches
+    // speed in ticks/seconds -> inches/second
+
     public static Shooter standard(HardwareMap hardwareMap) {
-        DcMotor shooter = hardwareMap.get(DcMotor.class, "shooter");
+        DcMotor compliance = hardwareMap.get(DcMotor.class, "shooter");
         CRServo pinball = hardwareMap.get(CRServo.class, "pinball");
         pinball.setDirection(DcMotor.Direction.REVERSE);
-        return new Shooter(shooter, pinball);
+        return new Shooter(compliance, pinball);
     }
 
 }
