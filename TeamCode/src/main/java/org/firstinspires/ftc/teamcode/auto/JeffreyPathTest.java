@@ -34,4 +34,18 @@ public class JeffreyPathTest extends LinearOpMode {
 
         drive.followTrajectory(traj);
     }
+
+    public static class ckr extends LinearOpMode{
+        @Override public void runOpMode() {
+            SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+
+            waitForStart();
+
+
+            Trajectory trajectory = drive.trajectoryBuilder(new Pose2d(-48.5,-49, Math.toRadians(0)))
+                    .splineToLinearHeading(new Pose2d(10,-32, Math.toRadians(0)), Math.toRadians(0))
+                    .build();
+            drive.followTrajectory(trajectory);
+        }
+    }
 }
