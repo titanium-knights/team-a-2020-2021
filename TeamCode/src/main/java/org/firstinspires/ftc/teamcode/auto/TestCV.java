@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.auto;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.vision.UGContourRingPipeline;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -11,15 +14,15 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
 @Autonomous(name = "Ring Pipeline Example")
-class UGContourRingPipelineJavaExample extends LinearOpMode {
+@Config public class TestCV extends LinearOpMode {
     private static final int CAMERA_WIDTH = 640; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
 
-    private static final int HORIZON = 100; // horizon value to tune
+    public static int HORIZON = 100; // horizon value to tune
 
     private static final boolean DEBUG = true; // if debug is wanted, change to true
 
-    private static final boolean USING_WEBCAM = true; // change to true if using webcam
+    private static final boolean USING_WEBCAM = false; // change to true if using webcam
     private static final String WEBCAM_NAME = "Webcam 1"; // insert webcam name from configuration if using webcam
 
     private UGContourRingPipeline pipeline;
@@ -45,6 +48,8 @@ class UGContourRingPipelineJavaExample extends LinearOpMode {
                     .getInstance()
                     .createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         }
+
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         camera.setPipeline(pipeline = new UGContourRingPipeline(telemetry, DEBUG));
 
