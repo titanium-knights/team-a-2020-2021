@@ -5,11 +5,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class WobbleGoal {
-    public CRServo arm;
     public Servo grabber;
 
-    public WobbleGoal(CRServo arm, Servo grabber) {
-        this.arm = arm;
+    public WobbleGoal(Servo grabber) {
         this.grabber = grabber;
     }
 
@@ -23,19 +21,19 @@ public class WobbleGoal {
 
     public void stopGrabber() {}
 
-    public void liftArm() {
-        this.arm.setPower(1);
+    @Deprecated public void liftArm() {
+        throw new RuntimeException("the arm doesn't exist anymore");
     }
 
-    public void lowerArm() {
-        this.arm.setPower(-1);
+    @Deprecated public void lowerArm() {
+        throw new RuntimeException("the arm doesn't exist anymore");
     }
 
-    public void stopArm() {
-        this.arm.setPower(0);
+    @Deprecated public void stopArm() {
+        throw new RuntimeException("the arm doesn't exist anymore");
     }
 
     public static WobbleGoal standard(HardwareMap hardwareMap) {
-        return new WobbleGoal(hardwareMap.crservo.get("wobble_arm"), hardwareMap.servo.get("wobble"));
+        return new WobbleGoal(hardwareMap.servo.get("wobble"));
     }
 }
