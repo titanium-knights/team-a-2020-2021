@@ -82,7 +82,7 @@ public class PathTestOpMode extends LinearOpMode {
 
         double bottom = bottomSensor.getDistance(DistanceUnit.INCH);
         double top = topSensor.getDistance(DistanceUnit.INCH);
-        if ((6.5 >= top && top >= 1) && (6 >= bottom && bottom >= 1)) {
+        if ((6.5 >= top && top >= 1) && (6.5 >= bottom && bottom >= 1)) {
             wobbleGoalTarget = 2;
         }
         else if ((8 >= bottom && bottom >= 4.5) && (top > 5)) {
