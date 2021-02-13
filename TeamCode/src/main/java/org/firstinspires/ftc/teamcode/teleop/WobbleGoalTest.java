@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.util.GamepadManager;
 import org.firstinspires.ftc.teamcode.util.WobbleGoal;
 
+@TeleOp(name = "Wobble Goal Tester")
 public class WobbleGoalTest extends OpMode {
     GamepadManager gm;
     WobbleGoal goal;
