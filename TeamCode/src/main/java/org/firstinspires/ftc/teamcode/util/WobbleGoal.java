@@ -3,13 +3,15 @@ package org.firstinspires.ftc.teamcode.util;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class WobbleGoal {
     public Servo grabber;
     public DcMotor arm;
 
-    public WobbleGoal(Servo grabber) {
+    public WobbleGoal(Servo grabber, DcMotor arm) {
         this.grabber = grabber;
+        this.arm = arm;
     }
 
     public void release() {
@@ -35,6 +37,6 @@ public class WobbleGoal {
     }
 
     public static WobbleGoal standard(HardwareMap hardwareMap) {
-        return new WobbleGoal(hardwareMap.servo.get("wobble"));
+        return new WobbleGoal(hardwareMap.servo.get("wobble"), hardwareMap.dcMotor.get("wobble_arm"));
     }
 }
