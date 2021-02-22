@@ -26,7 +26,7 @@ public class Intake {
         this.top = top;
         this.bottom = bottom;
         this.top.motor.setDirection(DcMotor.Direction.FORWARD);
-        this.bottom.motor.setDirection(DcMotor.Direction.REVERSE);
+        this.bottom.motor.setDirection(DcMotor.Direction.FORWARD);
     }
 
     /**

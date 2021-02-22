@@ -25,7 +25,7 @@ public class StandardOpMode extends LinearOpMode {
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }*/
         intake = Intake.standard(hardwareMap);
-        shooter = Shooter.standard(hardwareMap);
+        // shooter = Shooter.standard(hardwareMap);
 
         // TODO: Make utility class - shooter.shoot() or something?
         DcMotor shooterMotor = hardwareMap.dcMotor.get("shooter");
@@ -63,16 +63,9 @@ public class StandardOpMode extends LinearOpMode {
             if (gm1.right_bumper.pressed()) intake.togglePower();
             if (gm1.x.pressed()) shooterIsShooting = !shooterIsShooting;
             if (gamepad1.left_trigger > 0.5) {
-                shooterServo.setPosition(-0.5);
+                shooterServo.setPosition(-1);
             } else if (gamepad1.right_trigger > 0.5) {
                 shooterServo.setPosition(0.5);
-            }
-            if (gamepad1.b) {
-                shooterServo.setPower(1);
-                sleep(220);
-                shooterServo.setPower(-1);
-                sleep(220);
-                shooterServo.setPower(0);
             }
             if (gamepad1.y){
                 shooterFlap.setPosition(0.06);
