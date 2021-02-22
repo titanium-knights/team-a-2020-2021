@@ -25,11 +25,11 @@ public class WobbleGoal {
     public void stopGrabber() {}
 
     public void liftArm() {
-        arm.setPower(0.5);
+        arm.setPower(0.3);
     }
 
     public void lowerArm() {
-        arm.setPower(-0.5);
+        arm.setPower(-0.3);
     }
 
     public void stopArm() {
