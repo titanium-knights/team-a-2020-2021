@@ -20,12 +20,12 @@ public class StandardOpMode extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        drive = MecanumDrive.standard(hardwareMap);
+        /* drive = MecanumDrive.standard(hardwareMap);
         for (DcMotor motor: drive.getMotors()) {
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
         intake = Intake.standard(hardwareMap);
-        shooter = Shooter.standard(hardwareMap);
+        shooter = Shooter.standard(hardwareMap); */
 
         // TODO: Make utility class - shooter.shoot() or something?
         DcMotor shooterMotor = hardwareMap.dcMotor.get("shooter");
@@ -53,7 +53,7 @@ public class StandardOpMode extends LinearOpMode {
 
             // Drives in the inputted direction.
             MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, speed);
-            drive.move(slowMode ? 0.3 : 1.0, vector, turn * (slowMode ? 0.3 : 1.0));
+            // drive.move(slowMode ? 0.3 : 1.0, vector, turn * (slowMode ? 0.3 : 1.0));
             if (gm1.left_stick_button.pressed()) slowMode = !slowMode;
             telemetry.addData("Slow Mode", slowMode ? "Yes" : "No");
             telemetry.update();
