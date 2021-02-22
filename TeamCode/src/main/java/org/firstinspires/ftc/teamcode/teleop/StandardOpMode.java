@@ -57,8 +57,8 @@ public class StandardOpMode extends LinearOpMode {
             telemetry.update();
 
             // Toggles power and direction of the intake motors.
-            if (gm1.left_bumper.pressed()) intake.togglePower();
-            if (gm1.right_bumper.pressed()) intake.toggleDirection();
+            if (gm1.left_bumper.pressed()) intake.toggleDirection();
+            if (gm1.right_bumper.pressed()) intake.togglePower();
             if (gm1.x.pressed()) shooterIsShooting = !shooterIsShooting;
             if (gamepad1.left_trigger > 0.5) {
                 shooterServo.setPower(0.5);
