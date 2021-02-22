@@ -43,7 +43,7 @@ public class StandardOpMode extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            // Gets the speed, strafe, and turn of the robot and accounts for stick drifting
+            /* // Gets the speed, strafe, and turn of the robot and accounts for stick drifting
             double speed = gamepad1.left_stick_y;
             double strafe = -gamepad1.left_stick_x;
             double turn = -gamepad1.right_stick_x; // TODO: Remove negative sign
@@ -56,7 +56,7 @@ public class StandardOpMode extends LinearOpMode {
             // drive.move(slowMode ? 0.3 : 1.0, vector, turn * (slowMode ? 0.3 : 1.0));
             if (gm1.left_stick_button.pressed()) slowMode = !slowMode;
             telemetry.addData("Slow Mode", slowMode ? "Yes" : "No");
-            telemetry.update();
+            telemetry.update(); */
 
             // Toggles power and direction of the intake motors.
             if (gm1.left_bumper.pressed()) intake.toggleDirection();
