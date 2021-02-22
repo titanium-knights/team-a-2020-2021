@@ -23,9 +23,9 @@ public class StandardOpMode extends LinearOpMode {
         /* drive = MecanumDrive.standard(hardwareMap);
         for (DcMotor motor: drive.getMotors()) {
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        }
+        }*/
         intake = Intake.standard(hardwareMap);
-        shooter = Shooter.standard(hardwareMap); */
+        shooter = Shooter.standard(hardwareMap);
 
         // TODO: Make utility class - shooter.shoot() or something?
         DcMotor shooterMotor = hardwareMap.dcMotor.get("shooter");
