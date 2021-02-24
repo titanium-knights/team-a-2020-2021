@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.util;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Intake {
@@ -32,6 +33,8 @@ public class Intake {
         this.bottom.motor.setDirection(DcMotor.Direction.FORWARD);
         this.crservo1 = crservo1;
         this.crservo2 = crservo2;
+        crservo1.setDirection(DcMotorSimple.Direction.FORWARD);
+        crservo2.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     /**
