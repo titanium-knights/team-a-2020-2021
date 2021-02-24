@@ -12,6 +12,8 @@ public class WobbleGoal {
     public WobbleGoal(Servo grabber, DcMotor arm) {
         this.grabber = grabber;
         this.arm = arm;
+
+        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void release() {

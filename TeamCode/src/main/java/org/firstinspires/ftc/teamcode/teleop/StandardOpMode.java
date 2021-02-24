@@ -33,6 +33,7 @@ public class StandardOpMode extends LinearOpMode {
         Servo shooterFlap = hardwareMap.servo.get("Flap");
         
         boolean shooterIsShooting = false;
+        boolean flapRaised = false;
 
         WobbleGoal wobble = WobbleGoal.standard(hardwareMap);
 
@@ -63,14 +64,15 @@ public class StandardOpMode extends LinearOpMode {
             if (gm1.right_bumper.pressed()) intake.togglePower();
             if (gm1.x.pressed()) shooterIsShooting = !shooterIsShooting;
             if (gamepad1.left_trigger > 0.5) {
-                shooterServo.setPosition(-1);
+                shooterServo.setPosition(0);
             } else if (gamepad1.right_trigger > 0.5) {
                 shooterServo.setPosition(0.5);
             }
-            if (gamepad1.y){
-                shooterFlap.setPosition(0.06);
+            if (gm1.y.pressed()) flapRaised = !flapRaised;
+            if (flapRaised){
+                shooterFlap.setPosition(0.12);
             }else{
-                shooterFlap.setPosition(-0.06);
+                shooterFlap.setPosition(0);
             }
             if (gamepad1.dpad_left) {
                 wobble.release();
