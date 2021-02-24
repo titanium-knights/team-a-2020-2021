@@ -17,21 +17,21 @@ public class WobbleGoal {
     }
 
     public void release() {
-        this.grabber.setPosition(1);
+        this.grabber.setPosition(0.5);
     }
  
     public void grab() {
-        this.grabber.setPosition(0);
+        this.grabber.setPosition(0.05);
     }
 
     public void stopGrabber() {}
 
     public void liftArm() {
-        arm.setPower(0.3);
+        arm.setPower(0.6);
     }
 
     public void lowerArm() {
-        arm.setPower(-0.3);
+        arm.setPower(-0.6);
     }
 
     public void stopArm() {
