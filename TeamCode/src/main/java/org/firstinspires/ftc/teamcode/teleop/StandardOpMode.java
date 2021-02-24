@@ -29,6 +29,7 @@ public class StandardOpMode extends LinearOpMode {
 
         // TODO: Make utility class - shooter.shoot() or something?
         DcMotor shooterMotor = hardwareMap.dcMotor.get("shooter");
+        shooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Servo shooterServo = hardwareMap.servo.get("pinball");
         Servo shooterFlap = hardwareMap.servo.get("Flap");
         
