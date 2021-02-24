@@ -70,7 +70,7 @@ public class StandardOpMode extends LinearOpMode {
             }
             if (gm1.y.pressed()) flapRaised = !flapRaised;
             if (flapRaised){
-                shooterFlap.setPosition(0.12);
+                shooterFlap.setPosition(0.03);
             }else{
                 shooterFlap.setPosition(0);
             }
