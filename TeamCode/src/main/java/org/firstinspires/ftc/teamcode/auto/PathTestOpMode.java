@@ -90,8 +90,8 @@ public class PathTestOpMode extends LinearOpMode {
 
         Trajectory shootTrajectory = drive.trajectoryBuilder(new Pose2d(-63, -40, Math.toRadians(180)), Math.toRadians(-75))
                 .splineToLinearHeading(new Pose2d(-24, -58, Math.toRadians(180)), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(12, -49, Math.toRadians(180)), Math.toRadians(90))
-                .splineToLinearHeading(new Pose2d(-8, -40, Math.toRadians(180)), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(12, -58, Math.toRadians(180)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-10, -40, Math.toRadians(180)), Math.toRadians(180))
                 .build();
 
         drive.setPoseEstimate(shootTrajectory.start());
@@ -103,18 +103,21 @@ public class PathTestOpMode extends LinearOpMode {
             shooterServo.setPosition(0.15);
             sleep(500);
             shooterServo.setPosition(0);
-            sleep(500);
+            sleep(1000);
         }
         shooterMotor.setPower(0);
 
-        TrajectoryBuilder builder = drive.trajectoryBuilder(shootTrajectory.end(), Math.toRadians(0));
+        TrajectoryBuilder builder = drive.trajectoryBuilder(shootTrajectory.end(), 0);
         switch (box) {
             case 0:
                 builder.splineToLinearHeading(new Pose2d(12, -45, Math.toRadians(180)), Math.toRadians(-90));
+                break;
             case 1:
                 builder.splineToLinearHeading(new Pose2d(36, -21, Math.toRadians(180)), Math.toRadians(-90));
+                break;
             case 2:
                 builder.splineToLinearHeading(new Pose2d(60, -45, Math.toRadians(180)), Math.toRadians(-90));
+                break;
         }
         Trajectory traj = builder.build();
         drive.followTrajectory(traj);
