@@ -107,9 +107,19 @@ public class PathTestOpMode extends LinearOpMode {
         }
         shooterMotor.setPower(0);
 
+        TrajectoryBuilder builder = drive.trajectoryBuilder(shootTrajectory.end(), Math.toRadians(0));
         switch (box) {
             case 0:
-
+                builder.splineToLinearHeading(new Pose2d(12, -45), Math.toRadians(-90));
+            case 1:
+                builder.splineToLinearHeading(new Pose2d(36, -21), Math.toRadians(-90));
+            case 2:
+                builder.splineToLinearHeading(new Pose2d(60, -45), Math.toRadians(-90));
         }
+        Trajectory traj = builder.build();
+        drive.followTrajectory(traj);
+        wobbleGoal.release();
+
+        drive.followTrajectory(drive.trajectoryBuilder(traj.end()).strafeTo(new Vector2d(12, -21)).build());
     }
 }
