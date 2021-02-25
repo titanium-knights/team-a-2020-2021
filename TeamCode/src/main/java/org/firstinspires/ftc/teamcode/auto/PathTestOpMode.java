@@ -68,7 +68,7 @@ public class PathTestOpMode extends LinearOpMode {
 
         camera.setPipeline(pipeline = new UGContourRingPipeline(telemetry, DEBUG));
 
-        UGContourRingPipeline.Config.setCAMERA_WIDTH(20);
+        UGContourRingPipeline.Config.setCAMERA_WIDTH(25);
 
         UGContourRingPipeline.Config.setHORIZON(HORIZON);
 
@@ -109,13 +109,13 @@ public class PathTestOpMode extends LinearOpMode {
         TrajectoryBuilder builder = drive.trajectoryBuilder(shootTrajectory.end(), 0);
         switch (box) {
             case 0:
-                builder.splineToLinearHeading(new Pose2d(12, -45, Math.toRadians(90)), Math.toRadians(-90));
+                builder.splineToLinearHeading(new Pose2d(12, -52, Math.toRadians(90)), Math.toRadians(-90));
                 break;
             case 1:
-                builder.splineToLinearHeading(new Pose2d(36, -21, Math.toRadians(90)), Math.toRadians(-90));
+                builder.splineToLinearHeading(new Pose2d(36, -28, Math.toRadians(90)), Math.toRadians(-90));
                 break;
             case 2:
-                builder.splineToLinearHeading(new Pose2d(60, -45, Math.toRadians(90)), Math.toRadians(-90));
+                builder.splineToLinearHeading(new Pose2d(60, -52, Math.toRadians(90)), Math.toRadians(-90));
                 break;
         }
         Trajectory traj = builder.build();
@@ -124,6 +124,6 @@ public class PathTestOpMode extends LinearOpMode {
         sleep(1000);
         wobbleGoal.release();
 
-        drive.followTrajectory(drive.trajectoryBuilder(traj.end()).strafeTo(new Vector2d(12, -21)).build());
+        drive.followTrajectory(drive.trajectoryBuilder(traj.end(), Math.toRadians(90)).splineToLinearHeading(new Pose2d(12, 0, Math.toRadians(-90)), Math.toRadians(90)).build());
     }
 }
