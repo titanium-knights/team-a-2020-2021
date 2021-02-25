@@ -121,6 +121,8 @@ public class PathTestOpMode extends LinearOpMode {
         }
         Trajectory traj = builder.build();
         drive.followTrajectory(traj);
+        wobbleGoal.lowerArm();
+        sleep(1000);
         wobbleGoal.release();
 
         drive.followTrajectory(drive.trajectoryBuilder(traj.end()).strafeTo(new Vector2d(12, -21)).build());
