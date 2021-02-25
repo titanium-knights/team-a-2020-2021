@@ -110,13 +110,13 @@ public class PathTestOpMode extends LinearOpMode {
         TrajectoryBuilder builder = drive.trajectoryBuilder(shootTrajectory.end(), 0);
         switch (box) {
             case 0:
-                builder.splineToLinearHeading(new Pose2d(12, -45, Math.toRadians(180)), Math.toRadians(-90));
+                builder.splineToLinearHeading(new Pose2d(12, -45, Math.toRadians(90)), Math.toRadians(-90));
                 break;
             case 1:
-                builder.splineToLinearHeading(new Pose2d(36, -21, Math.toRadians(180)), Math.toRadians(-90));
+                builder.splineToLinearHeading(new Pose2d(36, -21, Math.toRadians(90)), Math.toRadians(-90));
                 break;
             case 2:
-                builder.splineToLinearHeading(new Pose2d(60, -45, Math.toRadians(180)), Math.toRadians(-90));
+                builder.splineToLinearHeading(new Pose2d(60, -45, Math.toRadians(90)), Math.toRadians(-90));
                 break;
         }
         Trajectory traj = builder.build();
