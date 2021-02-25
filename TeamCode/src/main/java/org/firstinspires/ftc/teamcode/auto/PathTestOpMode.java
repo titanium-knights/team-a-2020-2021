@@ -80,6 +80,12 @@ public class PathTestOpMode extends LinearOpMode {
         waitForStart();
 
         int box = 0; // 0 is for closest box, 1 is for the middle box, 2 is for the farthest box
+        UGContourRingPipeline.Height height = pipeline.getHeight();
+        if (height == UGContourRingPipeline.Height.FOUR) {
+            box = 2;
+        } else if (height == UGContourRingPipeline.Height.ONE) {
+            box = 1;
+        }
 
         Trajectory shootTrajectory = drive.trajectoryBuilder(new Pose2d(-63, -40, Math.toRadians(180)), Math.toRadians(-75))
                 .splineToLinearHeading(new Pose2d(-24, -61, Math.toRadians(180)), Math.toRadians(0))
