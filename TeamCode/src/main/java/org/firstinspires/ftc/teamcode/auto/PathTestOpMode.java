@@ -34,7 +34,7 @@ public class PathTestOpMode extends LinearOpMode {
     private static final int CAMERA_WIDTH = 640; // width of wanted camera resolution
     private static final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
 
-    public static int HORIZON = 100; // horizon value to tune
+    public static int HORIZON = 0; // horizon value to tune
 
     private static final boolean DEBUG = true; // if debug is wanted, change to true
 
@@ -89,7 +89,7 @@ public class PathTestOpMode extends LinearOpMode {
         }
 
         Trajectory shootTrajectory = drive.trajectoryBuilder(new Pose2d(-63, -40, Math.toRadians(180)), Math.toRadians(-75))
-                .splineToLinearHeading(new Pose2d(-24, -58, Math.toRadians(180)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-24, -61, Math.toRadians(180)), Math.toRadians(0))
                 .splineToLinearHeading(new Pose2d(12, -58, Math.toRadians(180)), Math.toRadians(90))
                 .splineToLinearHeading(new Pose2d(-10, -40, Math.toRadians(180)), Math.toRadians(180))
                 .build();
