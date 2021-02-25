@@ -38,7 +38,7 @@ public class PathTestOpMode extends LinearOpMode {
 
     private static final boolean DEBUG = true; // if debug is wanted, change to true
 
-    private static final boolean USING_WEBCAM = false; // change to true if using webcam
+    private static final boolean USING_WEBCAM = true; // change to true if using webcam
     private static final String WEBCAM_NAME = "Webcam 1"; // insert webcam name from configuration if using webcam
 
     private UGContourRingPipeline pipeline;
