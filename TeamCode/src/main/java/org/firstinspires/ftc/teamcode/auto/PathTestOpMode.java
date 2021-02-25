@@ -90,7 +90,8 @@ public class PathTestOpMode extends LinearOpMode {
 
         Trajectory shootTrajectory = drive.trajectoryBuilder(new Pose2d(-63, -40, Math.toRadians(180)), Math.toRadians(-75))
                 .splineToLinearHeading(new Pose2d(-24, -58, Math.toRadians(180)), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(-5, -40, Math.toRadians(180)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(12, -49, Math.toRadians(180)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-5, -40, Math.toRadians(180)), Math.toRadians(180))
                 .build();
 
         drive.setPoseEstimate(shootTrajectory.start());
