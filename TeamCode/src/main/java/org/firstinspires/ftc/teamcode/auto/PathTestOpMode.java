@@ -68,7 +68,7 @@ public class PathTestOpMode extends LinearOpMode {
 
         camera.setPipeline(pipeline = new UGContourRingPipeline(telemetry, DEBUG));
 
-        UGContourRingPipeline.Config.setCAMERA_WIDTH(25);
+        UGContourRingPipeline.Config.setCAMERA_WIDTH(20);
 
         UGContourRingPipeline.Config.setHORIZON(HORIZON);
 
