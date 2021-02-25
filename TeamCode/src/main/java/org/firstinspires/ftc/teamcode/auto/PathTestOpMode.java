@@ -49,6 +49,11 @@ public class PathTestOpMode extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         WobbleGoal wobbleGoal = WobbleGoal.standard(hardwareMap);
 
+        DcMotor shooterMotor = hardwareMap.dcMotor.get("shooter");
+        shooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Servo shooterServo = hardwareMap.servo.get("pinball");
+        Servo shooterFlap = hardwareMap.servo.get("Flap");
+
         int cameraMonitorViewId = this.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id",
                 hardwareMap.appContext.getPackageName());
         if (USING_WEBCAM) {
@@ -84,11 +89,20 @@ public class PathTestOpMode extends LinearOpMode {
         }
 
         Trajectory shootTrajectory = drive.trajectoryBuilder(new Pose2d(-63, -40), Math.toRadians(180))
-                .splineToLinearHeading(new Pose2d(-24, -50), Math.toRadians(0), Math.toRadians(180))
-                .splineToLinearHeading(new Pose2d(-2, -40), Math.toRadians(90), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-24, -50, Math.toRadians(180)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-2, -40, Math.toRadians(180)), Math.toRadians(90))
                 .build();
 
         drive.setPoseEstimate(shootTrajectory.start());
+        shooterMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooterMotor.setPower(-1);
         drive.followTrajectory(shootTrajectory);
+        for (int i = 0; i < 3; ++i) {
+            sleep(500);
+            shooterServo.setPosition(0.15);
+            sleep(500);
+            shooterServo.setPosition(0);
+            sleep(500);
+        }
     }
 }
