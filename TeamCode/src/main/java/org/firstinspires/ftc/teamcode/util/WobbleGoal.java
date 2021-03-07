@@ -36,8 +36,7 @@ public class WobbleGoal {
             this.arm1.setPosition(1);
             this.arm2.setPosition(0);
         }
-    public void stopArm() {
-    }
+    public void stopArm() {}
 
 /*
     public void liftArm() {
