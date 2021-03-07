@@ -9,21 +9,24 @@ public class Shooter {
 
     private static final double RING_VEL = 60; // in in/s
 
-    DcMotor compliance;
+    DcMotor compliance1;
+    DcMotor compliance2
     CRServo pinball;
     int lastEncPos;
 
     private boolean isShooting;
 
-    public Shooter(DcMotor compliance, CRServo pinball) {
-        this.compliance = compliance;
+    public Shooter(DcMotor compliance1, DcMotor compliance2, CRServo pinball) {
+        this.compliance1 = compliance1;
+        this.compliance2 = compliance2;
         this.pinball = pinball;
-        this.lastEncPos = compliance.getCurrentPosition();
+        this.lastEncPos = compliance1.getCurrentPosition();
+        this.lastEncPos = compliance2.getCurrentPosition();
 
-        SpeedAdjuster adjuster = new SpeedAdjuster();
-        adjuster.start();
+        //SpeedAdjuster adjuster = new SpeedAdjuster();
+        //adjuster.start();
     }
-
+    /*
     public class SpeedAdjuster extends Thread {
 
         public void run() {
@@ -45,8 +48,10 @@ public class Shooter {
      */
     public void toggleShooterPower () {
         isShooting = !isShooting;
-        compliance.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        compliance.setPower(isShooting ? 9 : 0);
+        compliance1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        compliance1.setPower(isShooting ? 9 : 0);
+        compliance2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        compliance2.setPower(isShooting ? 9 : 0);
     }
 
     /**
@@ -69,10 +74,11 @@ public class Shooter {
     // speed in ticks/seconds -> inches/second
 
     public static Shooter standard(HardwareMap hardwareMap) {
-        DcMotor compliance = hardwareMap.get(DcMotor.class, "shooter");
+        DcMotor compliance1 = hardwareMap.get(DcMotor.class, "shooter1");
+        DcMotor compliance2 = hardwareMap.get(DcMotor.class, "shooter2");
         CRServo pinball = hardwareMap.get(CRServo.class, "pinball");
         pinball.setDirection(DcMotor.Direction.REVERSE);
-        return new Shooter(compliance, pinball);
+        return new Shooter(compliance1, compliance2, pinball);
     }
 
 }

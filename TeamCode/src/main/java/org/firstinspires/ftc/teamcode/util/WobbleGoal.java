@@ -39,6 +39,7 @@ public class WobbleGoal {
     public void stopArm() {}
 
 /*
+    // old motor arm stuff
     public void liftArm() {
         arm.setPower(0.6);
     }
