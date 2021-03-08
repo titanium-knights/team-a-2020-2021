@@ -9,16 +9,18 @@ public class Shooter {
 
     private static final double RING_VEL = 60; // in in/s
 
-    DcMotor compliance;
+    DcMotor complianceLeft;
+    DcMotor complianceRight;
     CRServo pinball;
     int lastEncPos;
 
     private boolean isShooting;
 
-    public Shooter(DcMotor compliance, CRServo pinball) {
-        this.compliance = compliance;
+    public Shooter(DcMotor complianceLeft, DcMotor complianceRight, CRServo pinball) {
+        this.complianceLeft = complianceLeft;
+        this.complianceRight = complianceRight;
         this.pinball = pinball;
-        this.lastEncPos = compliance.getCurrentPosition();
+        this.lastEncPos = complianceLeft.getCurrentPosition();
 
         SpeedAdjuster adjuster = new SpeedAdjuster();
         adjuster.start();
@@ -29,10 +31,11 @@ public class Shooter {
         public void run() {
             try {
                 while (true) {
-                    double currentVel = Math.abs(compliance.getCurrentPosition() - lastEncPos) / 0.5 * 0.008727; // in/sec
-                    double targetPower = Math.min(1, Math.max(-1, RING_VEL / currentVel * compliance.getPower()));
-                    compliance.setPower(targetPower);
-                    lastEncPos = compliance.getCurrentPosition();
+                    double currentVel = Math.abs(complianceLeft.getCurrentPosition() - lastEncPos) / 0.5 * 0.008727; // in/sec
+                    double targetPower = Math.min(1, Math.max(-1, RING_VEL / currentVel * complianceLeft.getPower()));
+                    complianceLeft.setPower(targetPower);
+                    complianceRight.setPower(targetPower);
+                    lastEncPos = complianceLeft.getCurrentPosition();
                     Thread.sleep(500);
                 }
             } catch (Exception exc) { }
@@ -45,8 +48,10 @@ public class Shooter {
      */
     public void toggleShooterPower () {
         isShooting = !isShooting;
-        compliance.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        compliance.setPower(isShooting ? 9 : 0);
+        complianceLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        complianceLeft.setPower(isShooting ? 9 : 0);
+        complianceRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        complianceRight.setPower(isShooting ? 9 : 0);
     }
 
     /**
@@ -69,10 +74,12 @@ public class Shooter {
     // speed in ticks/seconds -> inches/second
 
     public static Shooter standard(HardwareMap hardwareMap) {
-        DcMotor compliance = hardwareMap.get(DcMotor.class, "shooter");
+        // HEY ANDREW, WHEN YOU CHANGE THE NAMES OF THE MOTORS, DO IT HERE THANK YOU :)))))) -anthonys
+        DcMotor complianceLeft = hardwareMap.get(DcMotor.class, "shooter1");
+        DcMotor complianceRight = hardwareMap.get(DcMotor.class, "shooter2");
         CRServo pinball = hardwareMap.get(CRServo.class, "pinball");
         pinball.setDirection(DcMotor.Direction.REVERSE);
-        return new Shooter(compliance, pinball);
+        return new Shooter(complianceLeft, complianceRight, pinball);
     }
 
 }

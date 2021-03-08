@@ -38,10 +38,28 @@ public class AutoOpMode extends LinearOpMode {
     private UGContourRingPipeline pipeline;
     private OpenCvCamera camera;
 
+    private DcMotor shooterMotor;
+    private Servo shooterServo;
+
+    private void shoot() {
+        for (int i = 0; i < 3; ++i) {
+            sleep(500);
+            shooterServo.setPosition(0.15);
+            sleep(500);
+            shooterServo.setPosition(0);
+            sleep(1000);
+        }
+        shooterMotor.setPower(0);
+    }
+
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         WobbleGoal wobbleGoal = WobbleGoal.standard(hardwareMap);
+
+        shooterMotor = hardwareMap.dcMotor.get("shooter");
+        shooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        shooterServo = hardwareMap.servo.get("pinball");
 
         int cameraMonitorViewId = this.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id",
                 hardwareMap.appContext.getPackageName());
@@ -79,65 +97,97 @@ public class AutoOpMode extends LinearOpMode {
 
         Trajectory trajectory = null;
 
+        shooterMotor.setPower(-1);
+
         if (isBlue) {
             // Blue stuff
-            trajectory = drive.trajectoryBuilder(new Pose2d(-60, 25, Math.toRadians(0)))
-                    .splineToLinearHeading(new Pose2d(10, 25, Math.toRadians(0)), Math.toRadians(0))
-                    .splineToLinearHeading(new Pose2d(50, 60, Math.toRadians(0)), Math.toRadians(0))
+            trajectory = drive.trajectoryBuilder(new Pose2d(-60, 25, Math.toRadians(180)))
+                    .splineToLinearHeading(new Pose2d(10, 25, Math.toRadians(180)), Math.toRadians(0)).build();
+                    drive.setPoseEstimate(trajectory.start());
+                    drive.followTrajectory(trajectory);
+                    shoot();
+                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
+                    .splineToLinearHeading(new Pose2d(33, 50, math.toRadians(180)), Math.toRadians(0))
+                    .addSpatialMarker(new Vector2d(33, 50), () -> {
+                        wobbleGoal.lowerArm();
+                    })
+                    .splineToLinearHeading(new Pose2d(50, 60, Math.toRadians(180)), Math.toRadians(0))
                     .addSpatialMarker(new Vector2d(50, 60), () -> {
                         wobbleGoal.release();
                     })
-                    .splineToLinearHeading(new Pose2d(-49, 50, Math.toRadians(0)), Math.toRadians(0)).build();
+                    .splineToLinearHeading(new Pose2d(-49, 50, Math.toRadians(180)), Math.toRadians(0)).build();
         } else {
             switch (box) {
                 case 0:
-                    trajectory = drive.trajectoryBuilder(new Pose2d(-63, -38, Math.toRadians(0)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(15, -38, Math.toRadians(0)), Math.toRadians(0))
+                    trajectory = drive.trajectoryBuilder(new Pose2d(-63, -38, Math.toRadians(180)), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(-10, -40, Math.toRadians(180)), Math.toRadians(0))
+                    drive.setPoseEstimate(trajectory.start());
+                    drive.followTrajectory(trajectory);
+                    shoot();
+                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
+                            .addSpatialMarker(new Vector2d(15,-25), () -> {
+                                wobbleGoal.lowerArm();
+                            })
+                            .splineToLinearHeading(new Pose2d(15, -38, Math.toRadians(180)), Math.toRadians(0))
                             .addSpatialMarker(new Vector2d(15,-38), () -> {
                                 wobbleGoal.release();
                             })
-                            .splineToLinearHeading(new Pose2d(15, -13, Math.toRadians(0)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(-48, -13, Math.toRadians(0)), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(15, -13, Math.toRadians(180)), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(-48, -13, Math.toRadians(180)), Math.toRadians(0))
                             .addSpatialMarker(new Vector2d(-48,-13), () -> {
                                 wobbleGoal.grab();
                             })
-                            .splineToLinearHeading(new Pose2d(15, -13, Math.toRadians(0)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(15, -38, Math.toRadians(0)), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(15, -13, Math.toRadians(180)), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(15, -38, Math.toRadians(180)), Math.toRadians(0))
                             .addSpatialMarker(new Vector2d(15,-38), () -> {
                                 wobbleGoal.release();
-                            })
-                            .splineToLinearHeading(new Pose2d(10, 0, Math.toRadians(0)), Math.toRadians(0)).build();
+                            }).build();
+
+
                     break;
                 case 1:
                     // middle box
-                    trajectory = drive.trajectoryBuilder(new Pose2d(-50, -50, Math.toRadians(0)))
-                            .splineToLinearHeading(new Pose2d(-25, -60), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(-5, -37.5), Math.toRadians(0))
-                            .addSpatialMarker(new Vector2d(-5, -37.5), () -> {
-                                // shoot
+                    trajectory = drive.trajectoryBuilder(new Pose2d(-50, -50, Math.toRadians(180)))
+                            .splineToLinearHeading(new Pose2d(-25, -60, Math.toRadians(180)), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(-5, -37.5, Math.toRadians(180)), Math.toRadians(0))
+                            .build();
+                    drive.setPoseEstimate(trajectory.start());
+                    drive.followTrajectory(trajectory);
+                    shoot();
+                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(37.5, -37.5, Math.toRadians(180)), Math.toRadians(0))
+                            .addSpatialMarker(new Vector2d(25.5, -37.5), () -> {
+                                wobbleGoal.lowerArm();
                             })
-                            .splineToLinearHeading(new Pose2d(37.5, -37.5), Math.toRadians(0))
                             .addSpatialMarker(new Vector2d(37.5, -37.5), () -> {
                                 wobbleGoal.release();
                             })
-                            .splineToLinearHeading(new Pose2d(-25, -12.5), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(-50, -12.5), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(-25, -12.5, Math.toRadians(180)), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(-50, -12.5, Math.toRadians(180)), Math.toRadians(0))
                             .addSpatialMarker(new Vector2d(-50, -12.5), () -> {
                                 wobbleGoal.grab();
                             })
-                            .splineToLinearHeading(new Pose2d(-25, -12.5), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(37.5, -37.5), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(-25, -12.5, Math.toRadians(180)), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(37.5, -37.5, Math.toRadians(180)), Math.toRadians(0))
                             .addSpatialMarker(new Vector2d(37.5, -37.5), () -> {
                                 wobbleGoal.release();
                             }).build();
                             
                     break;
                 case 2:
-                    trajectory = drive.trajectoryBuilder(new Pose2d(-64, -26, Math.toRadians(0)))
-                            .splineToLinearHeading(new Pose2d(-24, -26, Math.toRadians(0)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(24, -37, Math.toRadians(0)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(54, -37, Math.toRadians(0)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(60, -53, Math.toRadians(0)), Math.toRadians(0))
+                    trajectory = drive.trajectoryBuilder(new Pose2d(-64, -26, Math.toRadians(180)))
+                            .splineToLinearHeading(new Pose2d(-24, -26, Math.toRadians(180)), Math.toRadians(0))
+                            .build();
+                    drive.setPoseEstimate(trajectory.start());
+                    drive.followTrajectory(trajectory);
+                    shoot();
+                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(24, -37, Math.toRadians(180)), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(54, -37, Math.toRadians(180)), Math.toRadians(0))
+                            .addSpatialMarker(new Vector2d(48, -53), () -> {
+                                wobbleGoal.lowerArm();
+                            })
+                            .splineToLinearHeading(new Pose2d(60, -53, Math.toRadians(180)), Math.toRadians(0))
                             .addSpatialMarker(new Vector2d(60, -53), () -> {
                                 wobbleGoal.release();
                             }).build();
@@ -145,7 +195,6 @@ public class AutoOpMode extends LinearOpMode {
             }
         }
 
-        drive.setPoseEstimate(trajectory.start());
         drive.followTrajectory(trajectory);
     }
 }
