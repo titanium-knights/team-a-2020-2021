@@ -22,10 +22,10 @@ public class Shooter {
         this.pinball = pinball;
         this.lastEncPos = complianceLeft.getCurrentPosition();
 
-        SpeedAdjuster adjuster = new SpeedAdjuster();
-        adjuster.start();
+        //SpeedAdjuster adjuster = new SpeedAdjuster();
+        //adjuster.start();
     }
-
+    /*
     public class SpeedAdjuster extends Thread {
 
         public void run() {
