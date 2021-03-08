@@ -39,6 +39,7 @@ public class AutoOpMode extends LinearOpMode {
     private OpenCvCamera camera;
 
     private DcMotor shooterMotor;
+    private DcMotor shooterMotor2;
     private Servo shooterServo;
 
     private void shoot() {
@@ -50,6 +51,7 @@ public class AutoOpMode extends LinearOpMode {
             sleep(1000);
         }
         shooterMotor.setPower(0);
+        shooterMotor2.setPower(0);
     }
 
     @Override
@@ -57,8 +59,10 @@ public class AutoOpMode extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         WobbleGoal wobbleGoal = WobbleGoal.standard(hardwareMap);
 
-        shooterMotor = hardwareMap.dcMotor.get("shooter");
+        shooterMotor = hardwareMap.dcMotor.get("shooter1");
         shooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        shooterMotor2 = hardwareMap.dcMotor.get("shooter2");
+        shooterMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shooterServo = hardwareMap.servo.get("pinball");
 
         int cameraMonitorViewId = this.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id",
@@ -98,6 +102,7 @@ public class AutoOpMode extends LinearOpMode {
         Trajectory trajectory = null;
 
         shooterMotor.setPower(-1);
+        shooterMotor2.setPower(-1);
 
         if (isBlue) {
             // Blue stuff
