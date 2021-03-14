@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -7,6 +8,14 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.util.*;
+
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
+import com.acmerobotics.roadrunner.trajectory.config.TrajectoryConfig;
+import com.acmerobotics.roadrunner.trajectory.config.TrajectoryConfigManager;
+import com.acmerobotics.roadrunner.trajectory.config.TrajectoryGroupConfig;
 
 @TeleOp(name = "Standard Tele Op", group = "Tests B Experiments")
 public class StandardOpMode extends LinearOpMode {
@@ -28,9 +37,9 @@ public class StandardOpMode extends LinearOpMode {
         // shooter = Shooter.standard(hardwareMap);
 
         // TODO: Make utility class - shooter.shoot() or something?
-        DcMotor shooterMotor = hardwareMap.dcMotor.get("shooter1");
+        DcMotor shooterMotor1 = hardwareMap.dcMotor.get("shooter1");
         DcMotor shooterMotor2 = hardwareMap.dcMotor.get("shooter2");
-        shooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        shooterMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shooterMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Servo shooterServo = hardwareMap.servo.get("pinball");
         Servo shooterFlap = hardwareMap.servo.get("Flap");
@@ -71,6 +80,15 @@ public class StandardOpMode extends LinearOpMode {
             } else if (gamepad1.right_trigger > 0.5) {
                 shooterServo.setPosition(0.15);
             }
+
+            if (gm1.b.pressed())
+                for (int i = 0; i < 3; ++i) {
+                    shooterServo.setPosition(0.15);
+                    sleep(90);
+                    shooterServo.setPosition(0);
+                    sleep(90);
+            }
+
             if (gm1.y.pressed()) flapRaised = !flapRaised;
             if (flapRaised){
                 shooterFlap.setPosition(0.05);
@@ -90,13 +108,9 @@ public class StandardOpMode extends LinearOpMode {
                 wobble.stopArm();
             }
 
-            if (shooterIsShooting) {
-                shooterMotor.setPower(-1);
-                shooterMotor2.setPower(-1);
-            } else {
-                shooterMotor.setPower(0);
-                shooterMotor2.setPower(0);
-            }
+            if (shooterIsShooting) shooterMotor1.setPower(1); else shooterMotor1.setPower(0);
+            if (shooterIsShooting) shooterMotor2.setPower(1); else shooterMotor2.setPower(0);
+
             /*
             // Todo: Uncomment this and remove the old code when you want to test the Shooter class
             // Toggle shooter power and controls the pinball as necessary.

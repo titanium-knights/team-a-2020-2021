@@ -9,18 +9,18 @@ public class Shooter {
 
     private static final double RING_VEL = 60; // in in/s
 
-    DcMotor complianceLeft;
-    DcMotor complianceRight;
+    DcMotor compliance1;
+    DcMotor compliance2;
     CRServo pinball;
     int lastEncPos;
 
     private boolean isShooting;
 
-    public Shooter(DcMotor complianceLeft, DcMotor complianceRight, CRServo pinball) {
-        this.complianceLeft = complianceLeft;
-        this.complianceRight = complianceRight;
+    public Shooter(DcMotor compliance1, DcMotor compliance2, CRServo pinball) {
+        this.compliance1 = compliance1;
+        this.compliance2 = compliance2;
         this.pinball = pinball;
-        this.lastEncPos = complianceLeft.getCurrentPosition();
+        this.lastEncPos = compliance1.getCurrentPosition();
 
         //SpeedAdjuster adjuster = new SpeedAdjuster();
         //adjuster.start();
@@ -48,10 +48,10 @@ public class Shooter {
      */
     public void toggleShooterPower () {
         isShooting = !isShooting;
-        complianceLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        complianceLeft.setPower(isShooting ? 9 : 0);
-        complianceRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        complianceRight.setPower(isShooting ? 9 : 0);
+        compliance1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        compliance1.setPower(isShooting ? 9 : 0);
+        compliance2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        compliance2.setPower(isShooting ? 9 : 0);
     }
 
     /**
