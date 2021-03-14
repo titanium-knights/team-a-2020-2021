@@ -112,7 +112,7 @@ public class AutoOpMode extends LinearOpMode {
                     drive.followTrajectory(trajectory);
                     shoot();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
-                    .splineToLinearHeading(new Pose2d(33, 50, math.toRadians(180)), Math.toRadians(0))
+                    .splineToLinearHeading(new Pose2d(33, 50, Math.toRadians(180)), Math.toRadians(0))
                     .addSpatialMarker(new Vector2d(33, 50), () -> {
                         wobbleGoal.lowerArm();
                     })
@@ -126,6 +126,7 @@ public class AutoOpMode extends LinearOpMode {
                 case 0:
                     trajectory = drive.trajectoryBuilder(new Pose2d(-63, -38, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-10, -40, Math.toRadians(180)), Math.toRadians(0))
+                            .build();
                     drive.setPoseEstimate(trajectory.start());
                     drive.followTrajectory(trajectory);
                     shoot();

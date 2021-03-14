@@ -7,24 +7,22 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class WobbleGoal {
     public Servo grabber;
-    public Servo grabber2;
-    public DcMotor arm;
+    public Servo arm1;
+    public Servo arm2;
 
-    public WobbleGoal(Servo grabber, Servo grabber2, DcMotor arm) {
+    public WobbleGoal(Servo grabber, Servo arm1, Servo arm2) {
         this.grabber = grabber;
-        this.arm = arm;
-        this.grabber2 = grabber2;
+        this.arm1 = arm1;
+        this.arm2 = arm2;
 
         //arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void release() {
         grabber.setPosition(0.5);
-        grabber2.setPosition(0.5);
     }
     public void grab() {
         grabber.setPosition(0.05);
-        grabber2.setPostition(0.05);
     }
     public void stopGrabber() {}
 
@@ -57,16 +55,14 @@ public class WobbleGoal {
     }
 
     public void wobbleGrabber() {
-        arm.setPower(-0.6);
+        lowerArm();
         grabber.setPosition(0.05);
-        grabber2.setPosition(0.05);
-        arm.setPower(0.6);
+        liftArm();
     }
 
     public void wobbleRelease() {
-        arm.setPower(-0.6);
+        lowerArm();
         grabber.setPosition(0.5);
-        grabber2.setPosition(0.5);
-        arm.setPower(0.6);
+        liftArm();
     }
 }

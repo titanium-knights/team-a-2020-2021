@@ -28,14 +28,13 @@ public class StandardOpMode extends LinearOpMode {
         // shooter = Shooter.standard(hardwareMap);
 
         // TODO: Make utility class - shooter.shoot() or something?
-        DcMotor shooterMotor = hardwareMap.dcMotor.get("shooter");
+        DcMotor shooterMotor = hardwareMap.dcMotor.get("shooter1");
         DcMotor shooterMotor2 = hardwareMap.dcMotor.get("shooter2");
         shooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shooterMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Servo shooterServo = hardwareMap.servo.get("pinball");
-        Servo shooterServo2 = hardwareMap.servo.get("pinball2");
         Servo shooterFlap = hardwareMap.servo.get("Flap");
-        
+
         boolean shooterIsShooting = false;
         boolean flapRaised = false;
 
@@ -69,10 +68,8 @@ public class StandardOpMode extends LinearOpMode {
             if (gm1.x.pressed()) shooterIsShooting = !shooterIsShooting;
             if (gamepad1.left_trigger > 0.5) {
                 shooterServo.setPosition(0);
-                shooterServo2.setPosition(0);
             } else if (gamepad1.right_trigger > 0.5) {
                 shooterServo.setPosition(0.15);
-                shooterServo2.setPosition(0.15);
             }
             if (gm1.y.pressed()) flapRaised = !flapRaised;
             if (flapRaised){
