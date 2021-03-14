@@ -10,7 +10,7 @@ public class Shooter {
     private static final double RING_VEL = 60; // in in/s
 
     DcMotor compliance1;
-    DcMotor compliance2
+    DcMotor compliance2;
     CRServo pinball;
     int lastEncPos;
 

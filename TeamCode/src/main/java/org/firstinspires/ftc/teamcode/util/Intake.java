@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Intake {
 
-    private static final double MAX_POWER = 1.0;
+    private static final double MAX_POWER = 0.8;
 
     Motor top;
     Motor bottom;

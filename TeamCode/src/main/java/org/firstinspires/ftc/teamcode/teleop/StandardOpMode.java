@@ -80,6 +80,15 @@ public class StandardOpMode extends LinearOpMode {
             } else if (gamepad1.right_trigger > 0.5) {
                 shooterServo.setPosition(0.15);
             }
+
+            if (gm1.b.pressed())
+                for (int i = 0; i < 3; ++i) {
+                    shooterServo.setPosition(0.15);
+                    sleep(90);
+                    shooterServo.setPosition(0);
+                    sleep(90);
+            }
+
             if (gm1.y.pressed()) flapRaised = !flapRaised;
             if (flapRaised){
                 shooterFlap.setPosition(0.05);
