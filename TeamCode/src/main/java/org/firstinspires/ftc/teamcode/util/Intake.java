@@ -1,20 +1,19 @@
 package org.firstinspires.ftc.teamcode.util;
-
-import com.qualcomm.robotcore.hardware.CRServo;
+;import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Intake {
 
-    private static final double MAX_POWER = 0.8;
+    private static final double MAX_POWER = 0.6  ;
 
     Motor top;
     Motor bottom;
     CRServo crservo1;
     CRServo crservo2;
     boolean on;
-    double power = MAX_POWER;
+    double power = -MAX_POWER;
 
     public static class Motor {
         String name = null;

@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.drive;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 /*
@@ -45,7 +44,7 @@ public class DriveConstants {
      */
     public static double WHEEL_RADIUS = 1.8898; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 14.17; // in
+    public static double TRACK_WIDTH = 13.05; // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -61,20 +60,6 @@ public class DriveConstants {
     public static double MAX_ACCEL = 57.19292464206345;
     public static double MAX_ANG_VEL = Math.toRadians(231.25710656316164);
     public static double MAX_ANG_ACCEL = Math.toRadians(231.25710656316164);
-
-    /*
-     * These values are used to generate the trajectories for you robot. To ensure proper operation,
-     * the constraints should never exceed ~80% of the robot's actual capabilities. While Road
-     * Runner is designed to enable faster autonomous motion, it is a good idea for testing to start
-     * small and gradually increase them later after everything is working. The velocity and
-     * acceleration values are required, and the jerk values are optional (setting a jerk of 0.0
-     * forces acceleration-limited profiling). All distance units are inches.
-     */
-    public static DriveConstraints BASE_CONSTRAINTS = new DriveConstraints(
-            MAX_VEL, MAX_ACCEL, 0.0,
-            MAX_ANG_VEL, MAX_ANG_ACCEL, 0.0
-    );
-
 
     public static double encoderTicksToInches(double ticks) {
         return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / TICKS_PER_REV;
