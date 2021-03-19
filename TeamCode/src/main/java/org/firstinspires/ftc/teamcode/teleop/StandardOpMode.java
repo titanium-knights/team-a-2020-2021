@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.util.*;
 
@@ -26,6 +27,11 @@ public class StandardOpMode extends LinearOpMode {
     private Intake intake;
     private Shooter shooter;
     private boolean slowMode = false;
+
+    public static double shooterP = 40;
+    public static double shooterI = 0;
+    public static double shooterD = 0;
+    public static double shooterF = 14;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -84,9 +90,9 @@ public class StandardOpMode extends LinearOpMode {
             if (gm1.b.pressed())
                 for (int i = 0; i < 3; ++i) {
                     shooterServo.setPosition(0.15);
-                    sleep(90);
+                    sleep(250);
                     shooterServo.setPosition(0);
-                    sleep(90);
+                    sleep(250);
             }
 
             if (gm1.y.pressed()) flapRaised = !flapRaised;
@@ -101,12 +107,20 @@ public class StandardOpMode extends LinearOpMode {
                 wobble.grab();
             }
             if (gamepad1.dpad_up) {
+                wobble.grab();
+                sleep(300);
                 wobble.liftArm();
             } else if (gamepad1.dpad_down) {
                 wobble.lowerArm();
+                sleep(800);
+                wobble.release();
             } else {
                 wobble.stopArm();
             }
+
+            PIDFCoefficients shooterPIDF = new PIDFCoefficients(shooterP, shooterI, shooterD, shooterF);
+            //shooterMotor1.shooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, shooterPIDF);
+            //Shooter.shooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, shooterPIDF);
 
             if (shooterIsShooting) shooterMotor1.setPower(1); else shooterMotor1.setPower(0);
             if (shooterIsShooting) shooterMotor2.setPower(1); else shooterMotor2.setPower(0);
