@@ -171,7 +171,7 @@ public class AutoOpMode extends LinearOpMode {
                     releaseGoal();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(15, -13, Math.toRadians(180)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(-48, -13, Math.toRadians(180)), Math.toRadians(0)).build();
+                            .splineToLinearHeading(new Pose2d(-48, -13, Math.toRadians(0)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
                     grabGoal();
                     raiseToFoldedPos();
