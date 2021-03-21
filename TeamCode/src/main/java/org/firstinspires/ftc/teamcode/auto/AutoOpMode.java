@@ -120,7 +120,6 @@ public class AutoOpMode extends LinearOpMode {
                 () -> camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT));
 
         wobbleGoal.grab();
-        wobbleGoal.liftArm();
 
         waitForStart();
 
