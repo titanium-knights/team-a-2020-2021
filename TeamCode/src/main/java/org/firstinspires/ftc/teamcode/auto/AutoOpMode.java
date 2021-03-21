@@ -73,7 +73,7 @@ public class AutoOpMode extends LinearOpMode {
 
     private void lowerToLoweredPos() {
         wobbleGoal.lowerArm();
-        while (wobbleGoal.getPosition() > -6069) {
+        while (wobbleGoal.getPosition() > -5500) {
             sleep(10);
         }
         wobbleGoal.stopArm();
@@ -120,7 +120,6 @@ public class AutoOpMode extends LinearOpMode {
                 () -> camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT));
 
         wobbleGoal.grab();
-        wobbleGoal.liftArm();
 
         waitForStart();
 
@@ -163,7 +162,7 @@ public class AutoOpMode extends LinearOpMode {
                             .build();
                     drive.setPoseEstimate(trajectory.start());
                     drive.followTrajectory(trajectory);
-                    // shoot();
+                    shoot();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(15, -38, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
@@ -190,7 +189,7 @@ public class AutoOpMode extends LinearOpMode {
                             .build();
                     drive.setPoseEstimate(trajectory.start());
                     drive.followTrajectory(trajectory);
-                    // shoot();
+                    shoot();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(37.5, -37.5, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
