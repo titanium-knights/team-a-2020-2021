@@ -48,7 +48,7 @@ public class StandardOpMode extends LinearOpMode {
         shooterMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shooterMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Servo shooterServo = hardwareMap.servo.get("pinball");
-        Servo shooterFlap = hardwareMap.servo.get("Flap");
+        Servo shooterFlap = hardwareMap.servo.get("flap");
 
         boolean shooterIsShooting = false;
         boolean flapRaised = false;
