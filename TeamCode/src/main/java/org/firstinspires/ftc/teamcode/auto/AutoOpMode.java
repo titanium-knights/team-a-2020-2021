@@ -32,7 +32,7 @@ public class AutoOpMode extends LinearOpMode {
 
     private static final boolean DEBUG = true; // if debug is wanted, change to true
 
-    private static final boolean USING_WEBCAM = false; // change to true if using webcam
+    private static final boolean USING_WEBCAM = true; // change to true if using webcam
     private static final String WEBCAM_NAME = "Webcam 1"; // insert webcam name from configuration if using webcam
 
     private UGContourRingPipeline pipeline;
@@ -56,15 +56,11 @@ public class AutoOpMode extends LinearOpMode {
     }
 
     private void grabGoal() {
-        wobbleGoal.lowerArm();
-        sleep(1000);
-        wobbleGoal.release();
+        wobbleGoal.grab();
     }
 
     private void releaseGoal() {
-        wobbleGoal.grab();
-        sleep(1000);
-        wobbleGoal.liftArm();
+        wobbleGoal.release();
     }
 
     private void raiseToFoldedPos() {
@@ -162,12 +158,12 @@ public class AutoOpMode extends LinearOpMode {
         } else {
             switch (box) {
                 case 0:
-                    trajectory = drive.trajectoryBuilder(new Pose2d(-63, -38, Math.toRadians(180)), Math.toRadians(0))
+                    trajectory = drive.trajectoryBuilder(new Pose2d(-63, -50, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-10, -40, Math.toRadians(180)), Math.toRadians(0))
                             .build();
                     drive.setPoseEstimate(trajectory.start());
                     drive.followTrajectory(trajectory);
-                    shoot();
+                    // shoot();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(15, -38, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
@@ -188,13 +184,13 @@ public class AutoOpMode extends LinearOpMode {
                     break;
                 case 1:
                     // middle box
-                    trajectory = drive.trajectoryBuilder(new Pose2d(-50, -50, Math.toRadians(180)))
+                    trajectory = drive.trajectoryBuilder(new Pose2d(-63, -50, Math.toRadians(180)))
                             .splineToLinearHeading(new Pose2d(-25, -60, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-5, -37.5, Math.toRadians(180)), Math.toRadians(0))
                             .build();
                     drive.setPoseEstimate(trajectory.start());
                     drive.followTrajectory(trajectory);
-                    shoot();
+                    // shoot();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(37.5, -37.5, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
@@ -214,7 +210,7 @@ public class AutoOpMode extends LinearOpMode {
                     releaseGoal();
                     break;
                 case 2:
-                    trajectory = drive.trajectoryBuilder(new Pose2d(-64, -26, Math.toRadians(180)))
+                    trajectory = drive.trajectoryBuilder(new Pose2d(-63, -50, Math.toRadians(180)))
                             .splineToLinearHeading(new Pose2d(-24, -26, Math.toRadians(180)), Math.toRadians(0))
                             .build();
                     drive.setPoseEstimate(trajectory.start());
