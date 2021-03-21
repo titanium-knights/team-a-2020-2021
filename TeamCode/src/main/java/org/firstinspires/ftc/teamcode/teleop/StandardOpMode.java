@@ -75,6 +75,7 @@ public class StandardOpMode extends LinearOpMode {
             drive.move(slowMode ? 0.3 : 1.0, vector, turn * (slowMode ? 0.5 : 1.0));
             if (gm1.left_stick_button.pressed()) slowMode = !slowMode;
             telemetry.addData("Slow Mode", slowMode ? "Yes" : "No");
+            telemetry.addData("Arm Power", wobble.arm1.getPower());
             telemetry.update();
 
             // Toggles power and direction of the intake motors.
@@ -107,13 +108,9 @@ public class StandardOpMode extends LinearOpMode {
                 wobble.grab();
             }
             if (gamepad1.dpad_up) {
-                wobble.grab();
-                sleep(300);
                 wobble.liftArm();
             } else if (gamepad1.dpad_down) {
                 wobble.lowerArm();
-                sleep(800);
-                wobble.release();
             } else {
                 wobble.stopArm();
             }

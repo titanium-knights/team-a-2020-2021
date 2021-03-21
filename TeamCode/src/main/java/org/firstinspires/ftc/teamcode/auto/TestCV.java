@@ -53,7 +53,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 
         camera.setPipeline(pipeline = new UGContourRingPipeline(telemetry, DEBUG));
 
-        UGContourRingPipeline.Config.setCAMERA_WIDTH(320);
+        UGContourRingPipeline.Config.setCAMERA_WIDTH(20);
 
         UGContourRingPipeline.Config.setHORIZON(HORIZON);
 
