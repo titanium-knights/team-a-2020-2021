@@ -138,53 +138,53 @@ public class AutoOpMode extends LinearOpMode {
         } else {
             switch (box) {
                 case 0:
-                    trajectory = drive.trajectoryBuilder(new Pose2d(-63, -38, Math.toRadians(180)), Math.toRadians(0))
+                    trajectory = drive.trajectoryBuilder(new Pose2d(-63, -50, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-10, -40, Math.toRadians(180)), Math.toRadians(0))
                             .build();
                     drive.setPoseEstimate(trajectory.start());
                     drive.followTrajectory(trajectory);
-                    shoot();
+                    // shoot();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(15, -38, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
-                    releaseGoal();
+                    // releaseGoal();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(15, -13, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-48, -13, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
-                    grabGoal();
+                    // grabGoal();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(15, -13, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(15, -38, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
-                    releaseGoal();
+                    // releaseGoal();
                     break;
                 case 1:
                     // middle box
-                    trajectory = drive.trajectoryBuilder(new Pose2d(-50, -50, Math.toRadians(180)))
+                    trajectory = drive.trajectoryBuilder(new Pose2d(-63, -50, Math.toRadians(180)))
                             .splineToLinearHeading(new Pose2d(-25, -60, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-5, -37.5, Math.toRadians(180)), Math.toRadians(0))
                             .build();
                     drive.setPoseEstimate(trajectory.start());
                     drive.followTrajectory(trajectory);
-                    shoot();
+                    // shoot();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(37.5, -37.5, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
-                    releaseGoal();
+                    // releaseGoal();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-25, -12.5, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-50, -12.5, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
-                    grabGoal();
+                    // grabGoal();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-25, -12.5, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(37.5, -37.5, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
-                    releaseGoal();
+                    // releaseGoal();
                     break;
                 case 2:
-                    trajectory = drive.trajectoryBuilder(new Pose2d(-64, -26, Math.toRadians(180)))
+                    trajectory = drive.trajectoryBuilder(new Pose2d(-63, -50, Math.toRadians(180)))
                             .splineToLinearHeading(new Pose2d(-24, -26, Math.toRadians(180)), Math.toRadians(0))
                             .build();
                     drive.setPoseEstimate(trajectory.start());
@@ -200,12 +200,12 @@ public class AutoOpMode extends LinearOpMode {
                             .splineToLinearHeading(new Pose2d(-25, -12.5, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-50, -12.5, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
-                    grabGoal();
+                    // grabGoal();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-25, -12.5, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(60, -53, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
-                    releaseGoal();
+                    // releaseGoal();
                     break;
             }
         }
