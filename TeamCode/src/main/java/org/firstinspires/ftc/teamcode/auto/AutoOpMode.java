@@ -67,6 +67,30 @@ public class AutoOpMode extends LinearOpMode {
         wobbleGoal.liftArm();
     }
 
+    private void raiseToFoldedPos() {
+        wobbleGoal.liftArm();
+        while (wobbleGoal.getPosition() < 0) {
+            sleep(10);
+        }
+        wobbleGoal.stopArm();
+    }
+
+    private void lowerToLoweredPos() {
+        wobbleGoal.lowerArm();
+        while (wobbleGoal.getPosition() > -2521) {
+            sleep(10);
+        }
+        wobbleGoal.stopArm();
+    }
+
+    private void lowerToRaisedPos() {
+        wobbleGoal.lowerArm();
+        while (wobbleGoal.getPosition() > -6069) {
+            sleep(10);
+        }
+        wobbleGoal.stopArm();
+    }
+
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -147,16 +171,19 @@ public class AutoOpMode extends LinearOpMode {
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(15, -38, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
+                    lowerToLoweredPos();
                     releaseGoal();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(15, -13, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-48, -13, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
                     grabGoal();
+                    raiseToFoldedPos();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(15, -13, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(15, -38, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
+                    lowerToLoweredPos();
                     releaseGoal();
                     break;
                 case 1:
@@ -171,16 +198,19 @@ public class AutoOpMode extends LinearOpMode {
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(37.5, -37.5, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
+                    lowerToLoweredPos();
                     releaseGoal();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-25, -12.5, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-50, -12.5, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
                     grabGoal();
+                    raiseToFoldedPos();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-25, -12.5, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(37.5, -37.5, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
+                    lowerToLoweredPos();
                     releaseGoal();
                     break;
                 case 2:
@@ -201,10 +231,12 @@ public class AutoOpMode extends LinearOpMode {
                             .splineToLinearHeading(new Pose2d(-50, -12.5, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
                     grabGoal();
+                    raiseToFoldedPos();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-25, -12.5, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(60, -53, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
+                    lowerToLoweredPos();
                     releaseGoal();
                     break;
             }
