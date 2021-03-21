@@ -77,7 +77,7 @@ public class AutoOpMode extends LinearOpMode {
 
     private void lowerToLoweredPos() {
         wobbleGoal.lowerArm();
-        while (wobbleGoal.getPosition() > -2521) {
+        while (wobbleGoal.getPosition() > -6069) {
             sleep(10);
         }
         wobbleGoal.stopArm();
@@ -85,7 +85,7 @@ public class AutoOpMode extends LinearOpMode {
 
     private void lowerToRaisedPos() {
         wobbleGoal.lowerArm();
-        while (wobbleGoal.getPosition() > -6069) {
+        while (wobbleGoal.getPosition() > -2521) {
             sleep(10);
         }
         wobbleGoal.stopArm();
