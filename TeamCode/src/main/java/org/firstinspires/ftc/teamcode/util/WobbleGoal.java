@@ -1,19 +1,20 @@
 package org.firstinspires.ftc.teamcode.util;
 
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.*;
 
 public class WobbleGoal {
     public Servo grabber;
-    public Servo arm1;
-    public Servo arm2;
+    public CRServo arm1;
+    public CRServo arm2;
+    public Encoder encoder;
+    public int initialPosition;
 
-    public WobbleGoal(Servo grabber, Servo arm1, Servo arm2) {
+    public WobbleGoal(Servo grabber, CRServo arm1, CRServo arm2, Encoder encoder) {
         this.grabber = grabber;
         this.arm1 = arm1;
         this.arm2 = arm2;
+        this.encoder = encoder;
+        this.initialPosition = encoder.getCurrentPosition();
 
         //arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
@@ -27,14 +28,17 @@ public class WobbleGoal {
     public void stopGrabber() {}
 
     public void liftArm() {
-        this.arm1.setPosition(0);
-        this.arm2.setPosition(1);
+        arm1.setPower(-1);
+        arm2.setPower(1);
     }
     public void lowerArm() {
-            this.arm1.setPosition(1);
-            this.arm2.setPosition(0);
+            arm1.setPower(1);
+            arm2.setPower(-1);
         }
-    public void stopArm() {}
+    public void stopArm() {
+        arm1.setPower(0);
+        arm2.setPower(0);
+    }
 
 /*
     // old motor arm stuff
@@ -50,8 +54,7 @@ public class WobbleGoal {
 
     public static WobbleGoal standard(HardwareMap hardwareMap) {
         //return new WobbleGoal(hardwareMap.servo.get("wobble"), hardwareMap.dcMotor.get("wobble_arm"));
-        return new WobbleGoal(hardwareMap.servo.get("wobble"), hardwareMap.servo.get("arm1" ), hardwareMap.servo.get("arm2"));
-
+        return new WobbleGoal(hardwareMap.servo.get("wobble"), hardwareMap.crservo.get("arm1" ), hardwareMap.crservo.get("arm2"), new Encoder(hardwareMap.get(DcMotorEx.class, "intake_top")));
     }
 
     public void wobbleGrabber() {
@@ -64,5 +67,9 @@ public class WobbleGoal {
         lowerArm();
         grabber.setPosition(0.5);
         liftArm();
+    }
+
+    public int getPosition() {
+        return encoder.getCurrentPosition() - initialPosition;
     }
 }

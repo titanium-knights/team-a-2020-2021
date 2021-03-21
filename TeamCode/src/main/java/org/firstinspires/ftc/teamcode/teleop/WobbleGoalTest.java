@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import org.firstinspires.ftc.teamcode.util.Encoder;
 import org.firstinspires.ftc.teamcode.util.GamepadManager;
 import org.firstinspires.ftc.teamcode.util.WobbleGoal;
 
@@ -15,20 +17,20 @@ public class WobbleGoalTest extends OpMode {
         goal = WobbleGoal.standard(hardwareMap);
     }
 
+    @Override
+    public void start() {
+        super.start();
+    }
+
     @Override public void loop() {
-        gm.updateAll();
-        if (gamepad1.dpad_right) {
-            goal.grab();
-        } else if (gamepad1.dpad_left) {
-            goal.release();
+        if (gamepad1.dpad_up) {
+            goal.liftArm();
+        } else if (gamepad1.dpad_down) {
+            goal.lowerArm();
+        } else {
+            goal.stopArm();
         }
 
-        if (gm.dpad_up.pressed()) {
-            goal.grabber.setPosition(goal.grabber.getPosition() + 0.1);
-        } else if (gm.dpad_down.pressed()) {
-            goal.grabber.setPosition(goal.grabber.getPosition() - 0.1);
-        }
-
-        telemetry.addData("Pos", goal.grabber.getPosition());
+        telemetry.addData("Pos", goal.getPosition());
     }
 }
