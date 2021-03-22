@@ -48,7 +48,7 @@ public class StandardOpMode extends LinearOpMode {
         shooterMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shooterMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Servo shooterServo = hardwareMap.servo.get("pinball");
-        Servo shooterFlap = hardwareMap.servo.get("Flap");
+        Servo shooterFlap = hardwareMap.servo.get("flap");
 
         boolean shooterIsShooting = false;
         boolean flapRaised = false;
@@ -70,6 +70,12 @@ public class StandardOpMode extends LinearOpMode {
             if (Math.abs(strafe) < JOYSTICK_SENSITIVITY) strafe = 0;
             if (Math.abs(speed) < JOYSTICK_SENSITIVITY) speed = 0;
 
+            if (gamepad1.left_trigger > 0.5) {
+                turn += 0.3;
+            } else if (gamepad1.right_trigger > 0.5) {
+                turn -= 0.3;
+            }
+
             // Drives in the inputted direction.
             MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, speed);
             drive.move(slowMode ? 0.3 : 1.0, vector, turn * (slowMode ? 0.5 : 1.0));
@@ -82,11 +88,6 @@ public class StandardOpMode extends LinearOpMode {
             if (gm1.left_bumper.pressed()) intake.toggleDirection();
             if (gm1.right_bumper.pressed()) intake.togglePower();
             if (gm1.x.pressed()) shooterIsShooting = !shooterIsShooting;
-            if (gamepad1.left_trigger > 0.5) {
-                shooterServo.setPosition(0);
-            } else if (gamepad1.right_trigger > 0.5) {
-                shooterServo.setPosition(0.15);
-            }
 
             if (gm1.b.pressed())
                 for (int i = 0; i < 3; ++i) {
