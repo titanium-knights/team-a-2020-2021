@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.util;
 
 import com.qualcomm.robotcore.hardware.*;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+public static final int LOWERED_ENCODER_POS = -5500;
 
 public class WobbleGoal {
     public Servo grabber;
@@ -67,6 +70,22 @@ public class WobbleGoal {
         lowerArm();
         grabber.setPosition(0.5);
         liftArm();
+    }
+
+    public void raiseToFoldedPos(LinearOpMode opMode) {
+        liftArm();
+        while (getPosition() < 0) {
+            opMode.sleep(10);
+        }
+        stopArm();
+    }
+
+    public void lowerToLoweredPos(LinearOpMode opMode) {
+        lowerArm();
+        while (getPosition() > LOWERED_ENCODER_POS) {
+            opMode.sleep(10);
+        }
+        stopArm();
     }
 
     public int getPosition() {
