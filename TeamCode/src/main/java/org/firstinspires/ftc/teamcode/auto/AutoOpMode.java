@@ -4,6 +4,10 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,6 +15,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.util.*;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -20,6 +25,8 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import com.arcrobotics.ftclib.vision.UGContourRingPipeline;
+
+import java.util.Arrays;
 
 @Autonomous(name = "Auto Op Mode")
 public class AutoOpMode extends LinearOpMode {
@@ -45,11 +52,13 @@ public class AutoOpMode extends LinearOpMode {
     private WobbleGoal wobbleGoal;
 
     private void shoot() {
+        shooterServo.setPosition(0);
+        sleep(400);
         for (int i = 0; i < 3; ++i) {
             shooterServo.setPosition(0.15);
-            sleep(300);
+            sleep(400);
             shooterServo.setPosition(0);
-            sleep(300);
+            sleep(400);
         }
         shooterMotor.setPower(0);
         shooterMotor2.setPower(0);
@@ -57,6 +66,7 @@ public class AutoOpMode extends LinearOpMode {
 
     private void grabGoal() {
         wobbleGoal.grab();
+        sleep(500);
     }
 
     private void releaseGoal() {
@@ -65,7 +75,7 @@ public class AutoOpMode extends LinearOpMode {
 
     private void raiseToFoldedPos() {
         wobbleGoal.liftArm();
-        while (wobbleGoal.getPosition() < 0) {
+        while (wobbleGoal.getPosition() < -2521) {
             sleep(10);
         }
         wobbleGoal.stopArm();
@@ -97,6 +107,7 @@ public class AutoOpMode extends LinearOpMode {
         shooterMotor2 = hardwareMap.dcMotor.get("shooter2");
         shooterMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shooterServo = hardwareMap.servo.get("pinball");
+        Servo shooterFlap = hardwareMap.servo.get("flap");
 
         int cameraMonitorViewId = this.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id",
                 hardwareMap.appContext.getPackageName());
@@ -120,6 +131,7 @@ public class AutoOpMode extends LinearOpMode {
                 () -> camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT));
 
         wobbleGoal.grab();
+        shooterFlap.setPosition(0.025);
 
         waitForStart();
 
@@ -132,10 +144,13 @@ public class AutoOpMode extends LinearOpMode {
             box = 1;
         }
 
+        telemetry.addData("Chosen Path", box);
+        telemetry.update();
+
         Trajectory trajectory = null;
 
-        shooterMotor.setPower(-1);
-        shooterMotor2.setPower(-1);
+        shooterMotor.setPower(1);
+        shooterMotor2.setPower(1);
 
         if (isBlue) {
             // Blue stuff
@@ -158,87 +173,131 @@ public class AutoOpMode extends LinearOpMode {
             switch (box) {
                 case 0:
                     trajectory = drive.trajectoryBuilder(new Pose2d(-63, -50, Math.toRadians(180)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(-10, -40, Math.toRadians(180)), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(-2, -40, Math.toRadians(180)), Math.toRadians(0))
                             .build();
                     drive.setPoseEstimate(trajectory.start());
                     drive.followTrajectory(trajectory);
+                    sleep(1000);
                     shoot();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(15, -38, Math.toRadians(180)), Math.toRadians(0)).build();
+                            .splineToLinearHeading(new Pose2d(-3, -62, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
                     lowerToLoweredPos();
                     releaseGoal();
-                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(15, -13, Math.toRadians(180)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(-48, -13, Math.toRadians(180)), Math.toRadians(0)).build();
+                    sleep(500);
+                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(180))
+                            .splineToSplineHeading(new Pose2d(-33, -29, Math.toRadians(0)), Math.toRadians(180)).build();
+                    drive.followTrajectory(trajectory);
+                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(180))
+                            .lineTo(new Vector2d(-41, -29), new MinVelocityConstraint(
+                                    Arrays.asList(
+                                            new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
+                                            new MecanumVelocityConstraint(0.7 * DriveConstants.MAX_VEL, DriveConstants.TRACK_WIDTH))
+                            ), new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)).build();
                     drive.followTrajectory(trajectory);
                     grabGoal();
-                    raiseToFoldedPos();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(15, -13, Math.toRadians(180)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(15, -38, Math.toRadians(180)), Math.toRadians(0)).build();
+                            .splineToLinearHeading(new Pose2d(14, -47, Math.toRadians(90)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
-                    lowerToLoweredPos();
                     releaseGoal();
                     break;
                 case 1:
                     // middle box
-                    trajectory = drive.trajectoryBuilder(new Pose2d(-63, -50, Math.toRadians(180)))
+                    trajectory = drive.trajectoryBuilder(new Pose2d(-63, -50, Math.toRadians(180)), Math.toRadians(0))
                             .splineToLinearHeading(new Pose2d(-25, -60, Math.toRadians(180)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(-5, -37.5, Math.toRadians(180)), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(-2, -40, Math.toRadians(180)), Math.toRadians(0))
                             .build();
                     drive.setPoseEstimate(trajectory.start());
                     drive.followTrajectory(trajectory);
                     shoot();
+                    intake.togglePower();
+                    trajectory = drive.trajectoryBuilder(trajectory.end())
+                            .forward(10)
+                            .build();
+                            drive.followTrajectory(trajectory);
+                            intake.togglePower();
+                    trajectory = drive.trajectoryBuilder(trajectory.end())
+                            .forward(-10)
+                            .build();
+                            drive.followTrajectory(trajectory);
+                        shoot();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(37.5, -37.5, Math.toRadians(180)), Math.toRadians(0)).build();
+                            .splineToLinearHeading(new Pose2d(23, -40, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
                     lowerToLoweredPos();
                     releaseGoal();
-                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(-25, -12.5, Math.toRadians(180)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(-50, -12.5, Math.toRadians(180)), Math.toRadians(0)).build();
+                    sleep(500);
+                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(180))
+                            .splineToSplineHeading(new Pose2d(-33, -26, Math.toRadians(0)), Math.toRadians(180)).build();
+                    drive.followTrajectory(trajectory);
+                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(180))
+                            .lineTo(new Vector2d(-41, -26), new MinVelocityConstraint(
+                                    Arrays.asList(
+                                            new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
+                                            new MecanumVelocityConstraint(0.7 * DriveConstants.MAX_VEL, DriveConstants.TRACK_WIDTH))
+                            ), new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)).build();
                     drive.followTrajectory(trajectory);
                     grabGoal();
-                    raiseToFoldedPos();
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(-25, -12.5, Math.toRadians(180)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(37.5, -37.5, Math.toRadians(180)), Math.toRadians(0)).build();
+                            .splineToLinearHeading(new Pose2d(13.5, -35, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
-                    lowerToLoweredPos();
                     releaseGoal();
+                    sleep(500);
                     break;
                 case 2:
-                    trajectory = drive.trajectoryBuilder(new Pose2d(-63, -50, Math.toRadians(180)))
-                            .splineToLinearHeading(new Pose2d(-24, -26, Math.toRadians(180)), Math.toRadians(0))
+                    trajectory = drive.trajectoryBuilder(new Pose2d(-63, -50, Math.toRadians(180)), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(-25, -60, Math.toRadians(180)), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(-2, -40, Math.toRadians(180)), Math.toRadians(0))
                             .build();
                     drive.setPoseEstimate(trajectory.start());
                     drive.followTrajectory(trajectory);
                     shoot();
+                    intake.togglePower();
+                    trajectory = drive.trajectoryBuilder(trajectory)
+                        .forward(10)
+                        .build();
+                        drive.followTrajectory(trajectory);
+                        intake.togglePower();
+                trajectory = drive.trajectoryBuilder(trajectory)
+                        .forward(-10)
+                        .build();
+                        drive.followTrajectory(trajectory);
+                shoot();                        
                     trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(24, -37, Math.toRadians(180)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(54, -37, Math.toRadians(180)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(60, -53, Math.toRadians(180)), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(42, -62, Math.toRadians(180)), Math.toRadians(0))
                             .build();
-                    drive.followTrajectory(trajectory);
-                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(-25, -12.5, Math.toRadians(180)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(-50, -12.5, Math.toRadians(180)), Math.toRadians(0)).build();
-                    drive.followTrajectory(trajectory);
-                    grabGoal();
-                    raiseToFoldedPos();
-                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(-25, -12.5, Math.toRadians(180)), Math.toRadians(0))
-                            .splineToLinearHeading(new Pose2d(60, -53, Math.toRadians(180)), Math.toRadians(0)).build();
                     drive.followTrajectory(trajectory);
                     lowerToLoweredPos();
                     releaseGoal();
+                    sleep(500);
+                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(180))
+                            .splineToSplineHeading(new Pose2d(-20, -12.5, Math.toRadians(0)), Math.toRadians(0)).build();
+                    drive.followTrajectory(trajectory);
+                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(180))
+                            .splineToLinearHeading(new Pose2d(-31, -26, Math.toRadians(0)), Math.toRadians(0)).build();
+                    drive.followTrajectory(trajectory);
+                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(180))
+                            .lineTo(new Vector2d(-43, -26), new MinVelocityConstraint(
+                                    Arrays.asList(
+                                            new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
+                                            new MecanumVelocityConstraint(0.7 * DriveConstants.MAX_VEL, DriveConstants.TRACK_WIDTH))
+                            ), new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)).build();
+                    drive.followTrajectory(trajectory);
+                    grabGoal();
+                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(-20, -12.5, Math.toRadians(180)), Math.toRadians(0)).build();
+                    drive.followTrajectory(trajectory);
+                    trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(0))
+                            .splineToLinearHeading(new Pose2d(42, -62, Math.toRadians(180)), Math.toRadians(0)).build();
+                    drive.followTrajectory(trajectory);
+                    releaseGoal();
+                    sleep(500);
                     break;
             }
         }
 
-        trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(180))
-                .splineToLinearHeading(new Pose2d(0, 0), Math.toRadians(180)).build();
+        trajectory = drive.trajectoryBuilder(trajectory.end(), Math.toRadians(box == 0 ? 90 : 180))
+                .splineToLinearHeading(new Pose2d(8, 0), Math.toRadians(180)).build();
         drive.followTrajectory(trajectory);
     }
 }
