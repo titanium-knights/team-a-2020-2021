@@ -27,11 +27,21 @@ public class StandardOpMode extends LinearOpMode {
     private Intake intake;
     private Shooter shooter;
     private boolean slowMode = false;
+    private WobbleGoal wobbleGoal;
 
     public static double shooterP = 40;
     public static double shooterI = 0;
     public static double shooterD = 0;
     public static double shooterF = 14;
+
+    private void raiseUp() {
+        wobbleGoal.liftArm();
+        }
+    private void lowerArm() {
+        wobbleGoal.lowerArm();
+    }
+
+    WobbleGoal goal;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -48,12 +58,13 @@ public class StandardOpMode extends LinearOpMode {
         shooterMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shooterMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Servo shooterServo = hardwareMap.servo.get("pinball");
-        Servo shooterFlap = hardwareMap.servo.get("flap");
+        Servo shooterFlap = hardwareMap.servo.get("Flap");
+
+        wobbleGoal = WobbleGoal.standard(hardwareMap);
+        goal = WobbleGoal.standard(hardwareMap);
 
         boolean shooterIsShooting = false;
         boolean flapRaised = false;
-
-        WobbleGoal wobble = WobbleGoal.standard(hardwareMap);
 
         GamepadManager gm1 = new GamepadManager(gamepad1);
         GamepadManager gm2 = new GamepadManager(gamepad2);
@@ -70,31 +81,33 @@ public class StandardOpMode extends LinearOpMode {
             if (Math.abs(strafe) < JOYSTICK_SENSITIVITY) strafe = 0;
             if (Math.abs(speed) < JOYSTICK_SENSITIVITY) speed = 0;
 
+            if (gamepad1.left_trigger > 0.5) {
+                turn += 0.2;
+            } else if (gamepad1.right_trigger > 0.5) {
+                turn -= 0.2;
+            }
+
             // Drives in the inputted direction.
             MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, speed);
             drive.move(slowMode ? 0.3 : 1.0, vector, turn * (slowMode ? 0.5 : 1.0));
             if (gm1.left_stick_button.pressed()) slowMode = !slowMode;
             telemetry.addData("Slow Mode", slowMode ? "Yes" : "No");
-            telemetry.addData("Arm Power", wobble.arm1.getPower());
             telemetry.update();
 
             // Toggles power and direction of the intake motors.
             if (gm1.left_bumper.pressed()) intake.toggleDirection();
             if (gm1.right_bumper.pressed()) intake.togglePower();
-            if (gm1.x.pressed()) shooterIsShooting = !shooterIsShooting;
-            if (gamepad1.left_trigger > 0.5) {
-                shooterServo.setPosition(0);
-            } else if (gamepad1.right_trigger > 0.5) {
-                shooterServo.setPosition(0.15);
+            if (gm1.x.pressed()) {
+                shooterIsShooting = !shooterIsShooting;
+                intake.togglePower();
             }
-
             if (gm1.b.pressed())
                 for (int i = 0; i < 3; ++i) {
                     shooterServo.setPosition(0.15);
                     sleep(250);
                     shooterServo.setPosition(0);
                     sleep(250);
-            }
+                }
 
             if (gm1.y.pressed()) flapRaised = !flapRaised;
             if (flapRaised){
@@ -102,17 +115,30 @@ public class StandardOpMode extends LinearOpMode {
             }else{
                 shooterFlap.setPosition(0);
             }
+
+
+        if (gm1.a.pressed()) {
+            shooterServo.setPosition(0.15);
+        sleep(100);
+        shooterServo.setPosition(0);
+        sleep(100);
+    }
+
             if (gamepad1.dpad_left) {
-                wobble.release();
+                wobbleGoal.release();
             } else if (gamepad1.dpad_right) {
-                wobble.grab();
+                wobbleGoal.grab();
             }
             if (gamepad1.dpad_up) {
-                wobble.liftArm();
+                wobbleGoal.grab();
+                sleep(200);
+                raiseUp();
             } else if (gamepad1.dpad_down) {
-                wobble.lowerArm();
+                lowerArm();
+                sleep(200);
+                wobbleGoal.release();
             } else {
-                wobble.stopArm();
+                wobbleGoal.stopArm();
             }
 
             PIDFCoefficients shooterPIDF = new PIDFCoefficients(shooterP, shooterI, shooterD, shooterF);
@@ -131,8 +157,6 @@ public class StandardOpMode extends LinearOpMode {
 
             // Update the GamepadManagers (should happen at the end or beginning of the loop)
             gm1.updateAll();
-            gm2.updateAll();
-
         }
     }
 }
