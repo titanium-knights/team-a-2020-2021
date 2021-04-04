@@ -98,9 +98,20 @@ public class ahhhtoe extends LinearOpMode {
                 .lineToConstantHeading(new Vector2d(-18, -60)) //-18, -52
                 .splineToConstantHeading(new Vector2d(-2, -43), Math.toRadians(0)) //1, -36.5
                 .build();
+        Trajectory rightPowerShotTrajectory = drive.trajectoryBuilder(startPose, true)
+                .splineToConstantHeading(new Vector2d(-36, -60), Math.toRadians(0)) //-36, -52
+                .lineToConstantHeading(new Vector2d(-18, -60)) //-18, -52
+                .splineToConstantHeading(new Vector2d(0, -4), Math.toRadians(0))
+                .build();
+        Trajectory midPowerShotTrajectory = drive.trajectoryBuilder(rightPowerShotTrajectory.end(), true)
+                .strafeLeft(7.5)
+                .build();
+        Trajectory leftPowerShotTrajectory = drive.trajectoryBuilder(midPowerShotTrajectory.end(), true)
+                .strafeLeft(7.5)
+                .build();
 
         //Trajectories for A (0 stack)
-        Trajectory deliverA1 = drive.trajectoryBuilder((shootTrajectory.end()), true)
+        Trajectory deliverA1 = drive.trajectoryBuilder(box == 2 ? shootTrajectory.end() : leftPowerShotTrajectory.end(), true)
                 .splineToConstantHeading(new Vector2d(0.0, -60.5), Math.toRadians(0))
                 .build();
         Trajectory backawayA1 = drive.trajectoryBuilder((deliverA1.end()), false)
@@ -210,15 +221,33 @@ public class ahhhtoe extends LinearOpMode {
         shooterMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         shooterMotor.setPower(1); //start shooter
         shooterMotor2.setPower(1);
-        //navigate to launch line
-        drive.followTrajectory(shootTrajectory);
-        //shoot pre-loaded rings
-        sleep(250);
-        for (int i = 0; i < 3; ++i) {
+        if (box == 2) {
+            //navigate to launch line
+            drive.followTrajectory(shootTrajectory);
+            //shoot pre-loaded rings
+            sleep(250);
+            for (int i = 0; i < 3; ++i) {
+                shooterServo.setPosition(0.15);
+                sleep(250);
+                shooterServo.setPosition(0);
+                sleep(250);
+            }
+        } else {
+            drive.followTrajectory(rightPowerShotTrajectory);
+            sleep(250);
             shooterServo.setPosition(0.15);
             sleep(250);
             shooterServo.setPosition(0);
+            drive.followTrajectory(midPowerShotTrajectory);
             sleep(250);
+            shooterServo.setPosition(0.15);
+            sleep(250);
+            shooterServo.setPosition(0);
+            drive.followTrajectory(leftPowerShotTrajectory);
+            sleep(250);
+            shooterServo.setPosition(0.15);
+            sleep(250);
+            shooterServo.setPosition(0);
         }
         shooterMotor.setPower(0);
         shooterMotor2.setPower(0);
