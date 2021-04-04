@@ -21,6 +21,8 @@ import com.acmerobotics.roadrunner.trajectory.config.TrajectoryGroupConfig;
 @TeleOp(name = "Standard Tele Op", group = "Tests B Experiments")
 public class StandardOpMode extends LinearOpMode {
 
+    SampleMecanumDrive sampleMecanumDrive = new SampleMecanumDrive(hardwareMap);
+
     private static final double JOYSTICK_SENSITIVITY = 0.2f;
 
     private MecanumDrive drive;
@@ -114,6 +116,12 @@ public class StandardOpMode extends LinearOpMode {
                 wobble.lowerArm();
             } else {
                 wobble.stopArm();
+            }
+
+            if (gm2.b.pressed()) {
+                trajectory = drive.trajectoryBuilder(sampleMecanumDrive.getPoseEstimate())
+                    .splineToLinearHeading(new Pose2d(0, 0, Math.toRadians(180)), Math.toRadians(0)).build();
+                sampleMecanumDrive.followTrajectoryAsync(trajectory);
             }
 
             PIDFCoefficients shooterPIDF = new PIDFCoefficients(shooterP, shooterI, shooterD, shooterF);
