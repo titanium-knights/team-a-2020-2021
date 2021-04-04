@@ -65,7 +65,7 @@ public class ahhhtoe extends LinearOpMode {
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         camera.setPipeline(pipeline = new UGContourRingPipeline(telemetry, DEBUG));
-        UGContourRingPipeline.Config.setCAMERA_WIDTH(CAMERA_WIDTH);
+        UGContourRingPipeline.Config.setCAMERA_WIDTH(20);
         UGContourRingPipeline.Config.setHORIZON(HORIZON);
         camera.openCameraDeviceAsync(
         () -> camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT));
@@ -76,14 +76,14 @@ public class ahhhtoe extends LinearOpMode {
         flap.setPosition(0.012);
         shooterServo.setPosition(0.00);
 
+        waitForStart();
+
         int box = 0; // 0 is for closest box, 1 is for the middle box, 2 is for the farthest box
         UGContourRingPipeline.Height height = pipeline.getHeight();
         if (height == UGContourRingPipeline.Height.FOUR) {
             box = 2;
         } else if (height == UGContourRingPipeline.Height.ONE) {
             box = 1;}
-
-        waitForStart();
 
         //defines start pose
         Pose2d startPose = new Pose2d (-64, -42, Math.toRadians(180)); //64, 42
@@ -98,13 +98,13 @@ public class ahhhtoe extends LinearOpMode {
         Trajectory rightPowerShotTrajectory = drive.trajectoryBuilder(startPose, true)
                 .splineToConstantHeading(new Vector2d(-36, -60), Math.toRadians(0)) //-36, -52
                 .lineToConstantHeading(new Vector2d(-18, -60)) //-18, -52
-                .splineToConstantHeading(new Vector2d(0, -15), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-3, -12.5), Math.toRadians(0))
                 .build();
         Trajectory midPowerShotTrajectory = drive.trajectoryBuilder(rightPowerShotTrajectory.end(), true)
-                .strafeLeft(7.5)
+                .strafeLeft(8)
                 .build();
         Trajectory leftPowerShotTrajectory = drive.trajectoryBuilder(midPowerShotTrajectory.end(), true)
-                .strafeLeft(7.5)
+                .strafeLeft(8)
                 .build();
 
         //Trajectories for A (0 stack)
@@ -152,7 +152,7 @@ public class ahhhtoe extends LinearOpMode {
                 .splineToSplineHeading(new Pose2d(-30.0, -24.0, Math.toRadians(0.0)), Math.toRadians(180.0))
                 .build();
         Trajectory wobbleSlowB = drive.trajectoryBuilder((runWobbleB.end()), false)
-                .back(9, //6
+                .back(12, //6
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -231,9 +231,9 @@ public class ahhhtoe extends LinearOpMode {
             }
         } else {
             double oldPosition = flap.getPosition();
-            flap.setPosition(0.04);
+            flap.setPosition(0.05);
             drive.followTrajectory(rightPowerShotTrajectory);
-            sleep(250);
+            sleep(500);
             shooterServo.setPosition(0.15);
             sleep(250);
             shooterServo.setPosition(0);
@@ -247,7 +247,7 @@ public class ahhhtoe extends LinearOpMode {
             shooterServo.setPosition(0.15);
             sleep(250);
             shooterServo.setPosition(0);
-            flap.setPosition(oldPosition);
+            flap.setPosition(0.012);
         }
         shooterMotor.setPower(0);
         shooterMotor2.setPower(0);
