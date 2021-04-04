@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -18,6 +19,11 @@ import com.acmerobotics.roadrunner.trajectory.config.TrajectoryConfig;
 import com.acmerobotics.roadrunner.trajectory.config.TrajectoryConfigManager;
 import com.acmerobotics.roadrunner.trajectory.config.TrajectoryGroupConfig;
 
+import org.firstinspires.ftc.teamcode.util.GamepadManager;
+import org.firstinspires.ftc.teamcode.util.MecanumDrive;
+import org.firstinspires.ftc.teamcode.util.Shooter;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+
 @TeleOp(name = "Standard Tele Op", group = "Tests B Experiments")
 public class StandardOpMode extends LinearOpMode {
 
@@ -29,14 +35,10 @@ public class StandardOpMode extends LinearOpMode {
     private boolean slowMode = false;
     private WobbleGoal wobbleGoal;
 
-    public static double shooterP = 40;
-    public static double shooterI = 0;
-    public static double shooterD = 0;
-    public static double shooterF = 14;
-
     private void raiseUp() {
         wobbleGoal.liftArm();
-        }
+    }
+
     private void lowerArm() {
         wobbleGoal.lowerArm();
     }
@@ -46,7 +48,7 @@ public class StandardOpMode extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         drive = MecanumDrive.standard(hardwareMap);
-        for (DcMotor motor: drive.getMotors()) {
+        for (DcMotor motor : drive.getMotors()) {
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
         intake = Intake.standard(hardwareMap);
@@ -58,6 +60,7 @@ public class StandardOpMode extends LinearOpMode {
         shooterMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shooterMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Servo shooterServo = hardwareMap.servo.get("pinball");
+        SampleMecanumDrive MecDrive = new SampleMecanumDrive(hardwareMap);
         Servo shooterFlap = hardwareMap.servo.get("Flap");
 
         wobbleGoal = WobbleGoal.standard(hardwareMap);
@@ -67,24 +70,34 @@ public class StandardOpMode extends LinearOpMode {
         boolean flapRaised = false;
 
         GamepadManager gm1 = new GamepadManager(gamepad1);
-        GamepadManager gm2 = new GamepadManager(gamepad2);
 
         waitForStart();
 
-        while (opModeIsActive()) {
+        Pose2d startPose = new Pose2d(0, 0, Math.toRadians(180));
+        Trajectory PS1 = MecDrive.trajectoryBuilder((startPose), false)
+                .strafeLeft(19)
+                .build();
+        Trajectory PS2 = MecDrive.trajectoryBuilder((PS1.end()), false)
+                .strafeLeft(8)
+                .build();
+        Trajectory PS3 = MecDrive.trajectoryBuilder((PS2.end()), false)
+                .strafeLeft(8)
+                .build();
 
+        while (opModeIsActive()) {
+            gm1.updateAll();
             // Gets the speed, strafe, and turn of the robot and accounts for stick drifting
-            double speed = gamepad1.left_stick_y;
-            double strafe = -gamepad1.left_stick_x;
-            double turn = -gamepad1.right_stick_x; // TODO: Remove negative sign
+            double speed = -gamepad1.left_stick_y;
+            double strafe = gamepad1.left_stick_x;
+            double turn = gamepad1.right_stick_x; //
             if (Math.abs(turn) < JOYSTICK_SENSITIVITY) turn = 0;
             if (Math.abs(strafe) < JOYSTICK_SENSITIVITY) strafe = 0;
             if (Math.abs(speed) < JOYSTICK_SENSITIVITY) speed = 0;
 
             if (gamepad1.left_trigger > 0.5) {
-                turn += 0.2;
-            } else if (gamepad1.right_trigger > 0.5) {
                 turn -= 0.2;
+            } else if (gamepad1.right_trigger > 0.5) {
+                turn += 0.2;
             }
 
             // Drives in the inputted direction.
@@ -110,43 +123,67 @@ public class StandardOpMode extends LinearOpMode {
                 }
 
             if (gm1.y.pressed()) flapRaised = !flapRaised;
-            if (flapRaised){
+            if (flapRaised) {
                 shooterFlap.setPosition(0.05);
-            }else{
+            } else {
                 shooterFlap.setPosition(0);
             }
 
 
-        if (gm1.a.pressed()) {
-            shooterServo.setPosition(0.15);
-        sleep(100);
-        shooterServo.setPosition(0);
-        sleep(100);
-    }
-
-            if (gamepad1.dpad_left) {
-                wobbleGoal.release();
-            } else if (gamepad1.dpad_right) {
-                wobbleGoal.grab();
+            if (gm1.a.pressed()) {
+                shooterServo.setPosition(0.15);
+                sleep(100);
+                shooterServo.setPosition(0);
+                sleep(100);
             }
             if (gamepad1.dpad_up) {
                 wobbleGoal.grab();
-                sleep(200);
+                sleep(400);
                 raiseUp();
             } else if (gamepad1.dpad_down) {
                 lowerArm();
-                sleep(200);
+                sleep(400);
                 wobbleGoal.release();
             } else {
                 wobbleGoal.stopArm();
             }
+            if (gamepad1.dpad_left) {
+                MecDrive.setPoseEstimate(startPose);
+            }
 
-            PIDFCoefficients shooterPIDF = new PIDFCoefficients(shooterP, shooterI, shooterD, shooterF);
-            //shooterMotor1.shooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, shooterPIDF);
-            //Shooter.shooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, shooterPIDF);
+            if (gamepad1.dpad_right) {
+                //paths yes
 
-            if (shooterIsShooting) shooterMotor1.setPower(1); else shooterMotor1.setPower(0);
-            if (shooterIsShooting) shooterMotor2.setPower(1); else shooterMotor2.setPower(0);
+                shooterServo.setPosition(0);
+                shooterFlap.setPosition(0.05);
+                shooterMotor1.setPower(0.8);
+                shooterMotor2.setPower(0.8);
+                //PowerShot1
+                MecDrive.followTrajectory(PS1);
+                sleep(250);
+                shooterServo.setPosition(0.15);
+                sleep(250);
+                shooterServo.setPosition(0.00);
+                //PowerShot2
+                MecDrive.followTrajectory(PS2);
+                sleep(100);
+                shooterServo.setPosition(0.15);
+                sleep(250);
+                shooterServo.setPosition(0.00);
+                //PowerShot3
+                MecDrive.followTrajectory(PS3);
+                sleep(100);
+                shooterServo.setPosition(0.15);
+                sleep(250);
+                shooterServo.setPosition(0.00);
+                shooterMotor1.setPower(0);
+                shooterMotor2.setPower(0);
+            }
+
+                if (shooterIsShooting) shooterMotor1.setPower(1);
+                else shooterMotor1.setPower(0);
+                if (shooterIsShooting) shooterMotor2.setPower(1);
+                else shooterMotor2.setPower(0);
 
             /*
             // Todo: Uncomment this and remove the old code when you want to test the Shooter class
@@ -155,8 +192,7 @@ public class StandardOpMode extends LinearOpMode {
             shooter.nudgeRings(gamepad1.y, gamepad1.a);
              */
 
-            // Update the GamepadManagers (should happen at the end or beginning of the loop)
-            gm1.updateAll();
+                // Update the GamepadManagers (should happen at the end or beginning of the loop)
+            }
         }
     }
-}

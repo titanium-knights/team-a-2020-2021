@@ -31,6 +31,5 @@ public class WobbleGoalTest extends OpMode {
             goal.stopArm();
         }
 
-        telemetry.addData("Pos", goal.getPosition());
     }
 }
