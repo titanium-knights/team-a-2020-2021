@@ -73,20 +73,17 @@ public class ahhhtoe extends LinearOpMode {
         // init stuff
         wobbleGoal.liftArm();
         wobbleGoal.grab();
-        flap.setPosition(0.03);
+        flap.setPosition(0.012);
         shooterServo.setPosition(0.00);
 
-
-            int box = 0; // 0 is for closest box, 1 is for the middle box, 2 is for the farthest box
-            UGContourRingPipeline.Height height = pipeline.getHeight();
-            if (height == UGContourRingPipeline.Height.FOUR) {
-                box = 2;
-            } else if (height == UGContourRingPipeline.Height.ONE) {
-                box = 1;}
+        int box = 0; // 0 is for closest box, 1 is for the middle box, 2 is for the farthest box
+        UGContourRingPipeline.Height height = pipeline.getHeight();
+        if (height == UGContourRingPipeline.Height.FOUR) {
+            box = 2;
+        } else if (height == UGContourRingPipeline.Height.ONE) {
+            box = 1;}
 
         waitForStart();
-
-
 
         //defines start pose
         Pose2d startPose = new Pose2d (-64, -42, Math.toRadians(180)); //64, 42
@@ -101,7 +98,7 @@ public class ahhhtoe extends LinearOpMode {
         Trajectory rightPowerShotTrajectory = drive.trajectoryBuilder(startPose, true)
                 .splineToConstantHeading(new Vector2d(-36, -60), Math.toRadians(0)) //-36, -52
                 .lineToConstantHeading(new Vector2d(-18, -60)) //-18, -52
-                .splineToConstantHeading(new Vector2d(0, -4), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(0, -15), Math.toRadians(0))
                 .build();
         Trajectory midPowerShotTrajectory = drive.trajectoryBuilder(rightPowerShotTrajectory.end(), true)
                 .strafeLeft(7.5)
@@ -233,6 +230,8 @@ public class ahhhtoe extends LinearOpMode {
                 sleep(250);
             }
         } else {
+            double oldPosition = flap.getPosition();
+            flap.setPosition(0.04);
             drive.followTrajectory(rightPowerShotTrajectory);
             sleep(250);
             shooterServo.setPosition(0.15);
@@ -248,6 +247,7 @@ public class ahhhtoe extends LinearOpMode {
             shooterServo.setPosition(0.15);
             sleep(250);
             shooterServo.setPosition(0);
+            flap.setPosition(oldPosition);
         }
         shooterMotor.setPower(0);
         shooterMotor2.setPower(0);
