@@ -77,7 +77,7 @@ public class ahhhtoe extends LinearOpMode {
         shooterServo.setPosition(0.00);
 
 
-            int box = 2; // 0 is for closest box, 1 is for the middle box, 2 is for the farthest box
+            int box = 0; // 0 is for closest box, 1 is for the middle box, 2 is for the farthest box
             UGContourRingPipeline.Height height = pipeline.getHeight();
             if (height == UGContourRingPipeline.Height.FOUR) {
                 box = 2;
