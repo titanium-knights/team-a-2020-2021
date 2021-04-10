@@ -92,7 +92,7 @@ public class ahhhtoe extends LinearOpMode {
         Trajectory shootTrajectory = drive.trajectoryBuilder((startPose), true)
                 .splineToConstantHeading(new Vector2d(-36, -60), Math.toRadians(0)) //-36, -52
                 .lineToConstantHeading(new Vector2d(-18, -60)) //-18, -52
-                .splineToConstantHeading(new Vector2d(-2, -43), Math.toRadians(0)) //1, -36.5
+                .splineToConstantHeading(new Vector2d(-5, -43), Math.toRadians(0)) //1, -36.5
                 .build();
         Trajectory rightPowerShotTrajectory = drive.trajectoryBuilder(startPose, true)
                 .splineToConstantHeading(new Vector2d(-36, -60), Math.toRadians(0)) //-36, -52
@@ -103,7 +103,7 @@ public class ahhhtoe extends LinearOpMode {
                 .strafeLeft(8)
                 .build();
         Trajectory leftPowerShotTrajectory = drive.trajectoryBuilder(midPowerShotTrajectory.end(), true)
-                .strafeLeft(8)
+                .strafeLeft(7)
                 .build();
 
         //Trajectories for A (0 stack)
@@ -217,7 +217,7 @@ public class ahhhtoe extends LinearOpMode {
         shooterMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         if (box == 2) {
-            flap.setPosition(0.05);
+            flap.setPosition(0.00);
             shooterMotor.setPower(1); //start shooter
             shooterMotor2.setPower(1);
             //navigate to launch line
@@ -250,7 +250,7 @@ public class ahhhtoe extends LinearOpMode {
             shooterServo.setPosition(0.15);
             sleep(100);
             shooterServo.setPosition(0);
-            flap.setPosition(0.012);
+            flap.setPosition(0.0);
         }
         shooterMotor.setPower(0);
         shooterMotor2.setPower(0);
