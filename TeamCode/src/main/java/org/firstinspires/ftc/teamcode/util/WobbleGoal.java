@@ -22,9 +22,10 @@ public class WobbleGoal {
     }
     public void stopGrabber() {}
     public void liftArm() {
-        this.arm1.setPosition(0);
-        this.arm2.setPosition(1);
+        this.arm1.setPosition(0); //0
+        this.arm2.setPosition(1); //1
     }
+
     public void lowerArm() {
         this.arm1.setPosition(1);
         this.arm2.setPosition(0);
