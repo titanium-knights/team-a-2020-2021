@@ -12,9 +12,7 @@ public class ChristopherRodriguezPath extends LinearOpMode {
         waitForStart();
         Trajectory trajectory = drive.trajectoryBuilder(new Pose2d(-60,25, Math.toRadians(0)))
                 .splineToLinearHeading(new Pose2d(10,25, Math.toRadians(0)), Math.toRadians(0))
-                //shoot
-                .splineToLinearHeading(new Pose2d(50,-60, Math.toRadians(0)), Math.toRadians(0))
-                //drop off wobble goal
+                .splineToLinearHeading(new Pose2d(50,60, Math.toRadians(0)), Math.toRadians(0))
                 .splineToLinearHeading(new Pose2d(-49,50, Math.toRadians(0)), Math.toRadians(0))
                 .build();
         drive.setPoseEstimate(trajectory.start());
