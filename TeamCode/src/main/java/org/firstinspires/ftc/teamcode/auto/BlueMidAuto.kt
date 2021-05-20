@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint
 import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotor
+import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.teamcode.drive.DriveConstants
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive
 import org.firstinspires.ftc.teamcode.util.Intake
@@ -51,11 +52,28 @@ class BlueMidAuto: LinearOpMode() {
         val leftPowerShotTrajectory = drive.trajectoryBuilder(midPowerShotTrajectory.end(), true)
                 .strafeRight(7.0)
                 .build()
+
+        shooterMotor.power = 0.8
+        shooterMotor2.power = 0.8
+        flap.position = 0.025
         drive.followTrajectory(rightPowerShotTrajectory)
+        sleep(500)
+        shooterServo.position = 0.15
+        sleep(220) //; TODO: Consider reducing
+        shooterServo.position = 0.0
         drive.followTrajectory(midPowerShotTrajectory)
+        shooterServo.position = 0.15
+        sleep(220)
+        shooterServo.position = 0.0
         drive.followTrajectory(leftPowerShotTrajectory)
+        shooterServo.position = 0.15
+        sleep(220)
+        shooterServo.position = 0.0
+        flap.position = 0.0
 
         lateinit var trajectory: Trajectory
+
+        wobbleGoal.lowerArm()
 
         when (box){
             0 -> {
@@ -78,10 +96,14 @@ class BlueMidAuto: LinearOpMode() {
             }
         }
 
+        wobbleGoal.release()
+
         val backup = drive.trajectoryBuilder(trajectory.end(), false)
                 .splineToLinearHeading(Pose2d(-10.0, 36.0, toRadians(0.0)), toRadians(180.0)) //pick up wobble2
                 .build()
         drive.followTrajectory(backup)
+
+        wobbleGoal.liftArm()
 
         val intakePath = drive.trajectoryBuilder(backup.end(), false)
                 .forward(20.0,  //
@@ -99,6 +121,17 @@ class BlueMidAuto: LinearOpMode() {
                 .back(20.0)
                 .build()
         drive.followTrajectory(shoot)
+
+        shooterMotor.power = 1.0
+        shooterMotor2.power = 1.0
+        for (i in 0..2) {
+            shooterServo.position = 0.15
+            sleep(250)
+            shooterServo.position = 0.0
+            sleep(250)
+        }
+        shooterMotor.power = 0.0
+        shooterMotor2.power = 0.0
 
         val park = drive.trajectoryBuilder(shoot.end(), false)
                 .splineToConstantHeading(Vector2d(9.0, 36.0), toRadians(0.0))

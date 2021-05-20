@@ -62,10 +62,5 @@ class RedSideAuto: LinearOpMode() {
                 drive.followTrajectory(trajectory)
             }
         }
-
-        val backup = drive.trajectoryBuilder(trajectory.end(), false)
-                .splineToLinearHeading(Pose2d(-30.0, -26.0, toRadians(0.0)), toRadians(180.0)) //pick up wobble2
-                .build()
-        drive.followTrajectory(backup)
     }
 }
