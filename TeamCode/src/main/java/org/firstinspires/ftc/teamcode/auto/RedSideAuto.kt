@@ -36,28 +36,28 @@ class RedSideAuto: LinearOpMode() {
         val startPose = Pose2d(-64.0, -50.0, toRadians(180.0))
         drive.poseEstimate = startPose
 
-        val rightPowerShotTrajectory = drive.trajectoryBuilder(startPose, true)
-                .build()
-        val midPowerShotTrajectory = drive.trajectoryBuilder(rightPowerShotTrajectory.end(), true)
-                .build()
-        val leftPowerShotTrajectory = drive.trajectoryBuilder(midPowerShotTrajectory.end(), true)
-                .build()
-        drive.followTrajectory(rightPowerShotTrajectory)
-        drive.followTrajectory(midPowerShotTrajectory)
-        drive.followTrajectory(leftPowerShotTrajectory)
-
         lateinit var trajectory: Trajectory
 
         when (box) {
             0 -> {
-                trajectory = drive.trajectoryBuilder(leftPowerShotTrajectory.end(), toRadians(0.0))
-                        .splineToLinearHeading(Pose2d(12.0, -41.0, toRadians(90.0)), toRadians(-90.0))
+                trajectory = drive.trajectoryBuilder(startPose, toRadians(-90.0))
+                        .splineToConstantHeading(Vector2d(-48.0, -62.0), toRadians(0.0))
+                        .splineToConstantHeading(Vector2d(-48.0, 0.0), toRadians(0.0))
                         .build()
                 drive.followTrajectory(trajectory)
             }
             1 -> {
-                trajectory = drive.trajectoryBuilder(leftPowerShotTrajectory.end(), toRadians(0.0))
-                        .splineToConstantHeading(Vector2d(16.0, -36.0), toRadians(90.0))
+                trajectory = drive.trajectoryBuilder(startPose, toRadians(-90.0))
+                        .splineToConstantHeading(Vector2d(-48.0, -62.0), toRadians(0.0))
+                        .splineToConstantHeading(Vector2d(-48.0, 0.0), toRadians(0.0))
+                        .splineToConstantHeading(Vector2d(-36.0, 50.0), toRadians(90.0))
+                        .build()
+                drive.followTrajectory(trajectory)
+            }
+            2 -> {
+                trajectory = drive.trajectoryBuilder(startPose, toRadians(-90.0))
+                        .splineToConstantHeading(Vector2d(-48.0, -62.0), toRadians(0.0))
+                        .splineToConstantHeading(Vector2d(-48.0, 50.0), toRadians(0.0))
                         .build()
                 drive.followTrajectory(trajectory)
             }
