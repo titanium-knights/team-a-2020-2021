@@ -27,8 +27,8 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.Arrays;
 
-@Autonomous(name = "ahhhtoe")
-public class ahhhtoe extends LinearOpMode {
+@Autonomous(name = "afilm")
+public class film extends LinearOpMode {
 
     //random vision stuff
     private static final int CAMERA_WIDTH = 640; // width of wanted camera resolution
@@ -70,12 +70,13 @@ public class ahhhtoe extends LinearOpMode {
                 () -> camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT));
 
         // init stuff
-        wobbleGoal.liftArm();
         wobbleGoal.grab();
+        wobbleGoal.liftArm();
         flap.setPosition(0.00); //High goal: 0.00      PS: 0.05
         shooterServo.setPosition(0.00);
 
-        int box = 0; // 0 is for closest box, 1 is for the middle box, 2 is for the farthest box
+
+        int box = 2; // 0 is for closest box, 1 is for the middle box, 2 is for the farthest box
         UGContourRingPipeline.Height height = pipeline.getHeight();
         if (height == UGContourRingPipeline.Height.FOUR) {
             box = 2;
@@ -85,25 +86,37 @@ public class ahhhtoe extends LinearOpMode {
         waitForStart();
 
         //defines start pose
-        Pose2d startPose = new Pose2d (-64, -42, Math.toRadians(180)); //64, 42
+        Pose2d startPose = new Pose2d (-5, -43, Math.toRadians(180)); //64, 42
         drive.setPoseEstimate(startPose);
 
         //initial trajectory that drives to the launch line and shoots the pre-loaded ring
         Trajectory shootTrajectory = drive.trajectoryBuilder((startPose), true)
-                .splineToConstantHeading(new Vector2d(-36.0, -56.0), Math.toRadians(0.0)) //-36, -52
-                .lineToConstantHeading(new Vector2d(-18.0, -56.0)) //-18, -52
-                .splineToConstantHeading(new Vector2d(-5.0, -41.0), Math.toRadians(0.0)) //1, -36.5
+                .splineToConstantHeading(new Vector2d(-36, -60), Math.toRadians(0)) //-36, -52
+                .lineToConstantHeading(new Vector2d(-18, -60)) //-18, -52
+                .splineToConstantHeading(new Vector2d(-5, -43), Math.toRadians(0)) //1, -36.5
+                .build();
+        Trajectory rightPowerShotTrajectory = drive.trajectoryBuilder(startPose, true)
+                .splineToConstantHeading(new Vector2d(-21, -56), Math.toRadians(0)) //-36, -52
+                .splineToConstantHeading(new Vector2d(0, -16), Math.toRadians(0))
+                .build();
+        Trajectory midPowerShotTrajectory = drive.trajectoryBuilder(rightPowerShotTrajectory.end(), true)
+                .strafeLeft(7.5)
+                .build();
+        Trajectory leftPowerShotTrajectory = drive.trajectoryBuilder(midPowerShotTrajectory.end(), true)
+                .strafeLeft(7.5)
                 .build();
 
         //Trajectories for A (0 stack)
-        Trajectory deliverA1 = drive.trajectoryBuilder(shootTrajectory.end(), true)
+        Trajectory deliverA1 = drive.trajectoryBuilder(box == 2 ? shootTrajectory.end() : leftPowerShotTrajectory.end(), true)
                 .splineToConstantHeading(new Vector2d(0.0, -60.5), Math.toRadians(0))
                 .build();
-        Trajectory runWobbleA = drive.trajectoryBuilder((deliverA1.end()), false)
-                .lineToConstantHeading(new Vector2d(-6.0, -60.5)) //1, -36.5
-                .splineToConstantHeading(new Vector2d(-30.0, -26.0), Math.toRadians(180.0)) //1, -36.5//pick up wobble2
+        Trajectory backawayA1 = drive.trajectoryBuilder((deliverA1.end()), false)
+                .forward(6)
                 .build();
-        Trajectory wobbleSlowA = drive.trajectoryBuilder((runWobbleA.end().plus(new Pose2d(0, 0, Math.toRadians(180)))), false)
+        Trajectory runWobbleA = drive.trajectoryBuilder((backawayA1.end()), false)
+                .splineToLinearHeading(new Pose2d(-30.0, -26.0, Math.toRadians(0.0)), Math.toRadians(180.0)) //pick up wobble2
+                .build();
+        Trajectory wobbleSlowA = drive.trajectoryBuilder((runWobbleA.end()), false)
                 .back(8, //6
                         new MinVelocityConstraint(
                                 Arrays.asList(
@@ -111,7 +124,7 @@ public class ahhhtoe extends LinearOpMode {
                                         new MecanumVelocityConstraint(0.3 * DriveConstants.MAX_VEL, DriveConstants.TRACK_WIDTH))),
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
-        Trajectory deliverA2 = drive.trajectoryBuilder((wobbleSlowA.end().plus(new Pose2d(0, 0, Math.toRadians(180)))), false)
+        Trajectory deliverA2 = drive.trajectoryBuilder((wobbleSlowA.end()), false)
                 .splineToLinearHeading(new Pose2d(-10.0, -60.5, Math.toRadians(180)), Math.toRadians(0))
                 .build();
         Trajectory parkA = drive.trajectoryBuilder((deliverA2.end()), false)
@@ -129,13 +142,13 @@ public class ahhhtoe extends LinearOpMode {
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         Trajectory shootB = drive.trajectoryBuilder((intakeB.end()), false)
-                .lineToConstantHeading(new Vector2d(-5.0, -41))
+                .lineToConstantHeading(new Vector2d(-2.0, -43))
                 .build();
         Trajectory deliverB1 = drive.trajectoryBuilder((shootB.end()), false)
-                .back(28.0)
+                .back(24.0)
                 .build();
         Trajectory runWobbleB = drive.trajectoryBuilder((deliverB1.end()), false)
-                .splineToSplineHeading(new Pose2d(-30.0, -25.5, Math.toRadians(0.0)), Math.toRadians(180.0))
+                .splineToSplineHeading(new Pose2d(-30.0, -22.0, Math.toRadians(0.0)), Math.toRadians(180.0))
                 .build();
         Trajectory wobbleSlowB = drive.trajectoryBuilder((runWobbleB.end()), false)
                 .back(7, //6
@@ -157,7 +170,7 @@ public class ahhhtoe extends LinearOpMode {
                 .strafeRight(1)
                 .build();
         Trajectory intakeC = drive.trajectoryBuilder((strafeC.end()), false)
-                .forward(20, //
+                .forward(10, //
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -165,18 +178,18 @@ public class ahhhtoe extends LinearOpMode {
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         Trajectory shootC = drive.trajectoryBuilder((intakeC.end()), false)
-                .back(20.0)
+                .back(10.0)
                 .build();
         Trajectory intakeC2 = drive.trajectoryBuilder((shootC.end()), false)
-                .lineToConstantHeading(new Vector2d(-34, -38),
+                .lineToConstantHeading(new Vector2d(-24, -40),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
-                                        new MecanumVelocityConstraint(0.35 * DriveConstants.MAX_VEL, DriveConstants.TRACK_WIDTH))),
+                                        new MecanumVelocityConstraint(0.3 * DriveConstants.MAX_VEL, DriveConstants.TRACK_WIDTH))),
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         Trajectory shootC2 = drive.trajectoryBuilder((intakeC2.end()), false)
-                .lineToConstantHeading(new Vector2d(-5, -41))
+                .lineToConstantHeading(new Vector2d(-5, -43))
                 .build();
         Trajectory deliverC1 = drive.trajectoryBuilder((shootC2.end()), false)
                 .lineToConstantHeading(new Vector2d(48.0, -60.5))
@@ -194,7 +207,7 @@ public class ahhhtoe extends LinearOpMode {
                 .build();
         Trajectory deliverC2 = drive.trajectoryBuilder((wobbleSlowC.end()), false)
                 //.splineToLinearHeading(new Pose2d(30, -69.5, Math.toRadians(180.0)), Math.toRadians(0.0))
-                .lineToLinearHeading(new Pose2d(30, -72.5, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(34, -60.5, Math.toRadians(180)))
                 .build();
         Trajectory parkC = drive.trajectoryBuilder((deliverC2.end()), false)
                 .lineToConstantHeading(new Vector2d(0, -60))
@@ -202,9 +215,10 @@ public class ahhhtoe extends LinearOpMode {
 
         shooterMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         shooterMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+/*if (box == 2) {
             shooterMotor.setPower(1); //start shooter
             shooterMotor2.setPower(1);
+            sleep(3000);
             //navigate to launch line
             drive.followTrajectory(shootTrajectory);
             //shoot pre-loaded rings
@@ -215,26 +229,46 @@ public class ahhhtoe extends LinearOpMode {
                 shooterServo.setPosition(0);
                 sleep(250);
             }
-
+        } else {
+            shooterMotor.setPower(0.8); //start shooter
+            shooterMotor2.setPower(0.8);
+            double oldPosition = flap.getPosition();
+            flap.setPosition(0.05);
+            drive.followTrajectory(rightPowerShotTrajectory);
+            sleep(250);
+            shooterServo.setPosition(0.15);
+            sleep(100);
+            shooterServo.setPosition(0);
+            drive.followTrajectory(midPowerShotTrajectory);
+            sleep(100);
+            shooterServo.setPosition(0.15);
+            sleep(100);
+            shooterServo.setPosition(0);
+            drive.followTrajectory(leftPowerShotTrajectory);
+            sleep(100);
+            shooterServo.setPosition(0.15);
+            sleep(100);
+            shooterServo.setPosition(0);
+            flap.setPosition(oldPosition);
+        }
+        sleep(2000);
+        shooterMotor.setPower(0);
+        shooterMotor2.setPower(0);
+*/
         switch (box) {
             case 0: // navigate to a, deposit, and go to pick up wobble 2
                 wobbleGoal.lowerArm();
                 drive.followTrajectory(deliverA1);
                 wobbleGoal.release();
+                drive.followTrajectory(backawayA1);
                 drive.followTrajectory(runWobbleA);
-                drive.turn(Math.toRadians(180));
                 drive.followTrajectory(wobbleSlowA);
-                wobbleGoal.grab();
-                sleep(100);
-                drive.turn(Math.toRadians(180));
-                drive.followTrajectory(deliverA2);
-                drive.followTrajectory(parkA);
                 break;
             case 1: // intake 1, shoot 1, navigate to b, deposit, and go to pick up wobble 2
                 intake.togglePower();
                 drive.followTrajectory(intakeB);
-                shooterMotor.setPower(0.9);
-                shooterMotor2.setPower(0.9);
+                shooterMotor.setPower(1);
+                shooterMotor2.setPower(1);
                 drive.followTrajectory(shootB);
                 sleep(250);
                 intake.togglePower();
@@ -255,13 +289,13 @@ public class ahhhtoe extends LinearOpMode {
 
             case 2: // intake 3, shoot 3, intake 1, shoot 1, navigate to spot c, deposit, and go to pick up wobble 2
                 intake.togglePower();
-                drive.followTrajectory(strafeC);
+                //drive.followTrajectory(strafeC);
                 drive.followTrajectory(intakeC);
                 shooterMotor.setPower(1);
                 shooterMotor2.setPower(1);
                 drive.followTrajectory(shootC);
                 intake.togglePower();
-                sleep(250);
+                sleep(300);
                 for (int i = 0; i < 3; ++i) {
                     shooterServo.setPosition(0.15);
                     sleep(250);
@@ -277,7 +311,7 @@ public class ahhhtoe extends LinearOpMode {
                 drive.followTrajectory(shootC2);
                 sleep(100);
                 intake.togglePower();
-                sleep(100);
+                sleep(200);
                 for (int i = 0; i < 3; ++i) {
                     shooterServo.setPosition(0.15);
                     sleep(250);
@@ -286,15 +320,20 @@ public class ahhhtoe extends LinearOpMode {
                 }
                 shooterMotor.setPower(0);
                 shooterMotor2.setPower(0);
+
                 wobbleGoal.lowerArm();
                 drive.followTrajectory(deliverC1);
+                /*
                 wobbleGoal.release();
+                wobbleGoal.lowerArm();
+                wobbleGoal.release();
+                sleep(2000);
                 drive.followTrajectory(runWobbleC);
-                drive.followTrajectory(wobbleSlowC);
+                drive.followTrajectory(wobbleSlowC);*/
                 break;
         }
-        wobbleGoal.grab();     // wobble 2 grabbbbb
-        sleep(250);
+        /*wobbleGoal.grab();     // wobble 2 grabbbbb
+        sleep(2000);
 
         switch (box) {  // deliver wobble 2 and park
             case 0: //deposit second wobble at a
@@ -310,10 +349,11 @@ public class ahhhtoe extends LinearOpMode {
                 drive.followTrajectory(parkB);
                 break;
             case 2: //deposit second wobble at c
-                drive.followTrajectory(deliverC2);
+                //drive.followTrajectory(deliverC2);
+                sleep(1000);
                 wobbleGoal.release();
                 drive.followTrajectory(parkC);
                 break;
-        }
+        }*/
     }
 }
