@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.util;
-;import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -56,6 +56,14 @@ public class Intake {
         this.bottom.motor.setPower(power);
         crservo1.setPower(on ? power : 0);
         crservo2.setPower(on ? power : 0);
+    }
+
+    public void intakeOn(){
+        this.top.motor.setPower(power);
+        this.bottom.motor.setPower(power);
+        crservo1.setPower(on ? power : 0);
+        crservo2.setPower(on ? power : 0);
+        on = true;
     }
 
     /**
