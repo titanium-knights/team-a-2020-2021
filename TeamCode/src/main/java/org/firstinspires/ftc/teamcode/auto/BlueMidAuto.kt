@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstra
 import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint
 import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint
 import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.Servo
@@ -16,7 +17,7 @@ import org.firstinspires.ftc.teamcode.util.Intake
 import org.firstinspires.ftc.teamcode.util.WobbleGoal
 import java.lang.Math.toRadians
 import java.util.*
-
+@Autonomous
 class BlueMidAuto: LinearOpMode() {
     override fun runOpMode(){
         val drive = SampleMecanumDrive(hardwareMap)

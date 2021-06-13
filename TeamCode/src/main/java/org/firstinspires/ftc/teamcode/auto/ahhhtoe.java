@@ -82,7 +82,8 @@ public class ahhhtoe extends LinearOpMode {
         if (height == UGContourRingPipeline.Height.FOUR) {
             box = 2;
         } else if (height == UGContourRingPipeline.Height.ONE) {
-            box = 1;}
+            box = 1;
+        }
 
         //defines start pose
         Pose2d startPose = new Pose2d (-64, -42, Math.toRadians(180)); //64, 42
